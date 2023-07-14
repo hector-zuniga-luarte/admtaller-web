@@ -1,0 +1,84 @@
+
+/* Sobreescribimos la fuente de todo el sitio */
+* {
+    font-family: 'Source Sans Pro', sans-serif;
+    /* system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; */
+}
+
+.site-header {
+
+    color: whitesmoke;
+    background-color: #0066aa;
+}
+
+.site-header a {
+
+    color: whitesmoke;
+    text-decoration: none;
+}
+
+.site-header a:hover {
+
+    color: lightgray;
+}
+
+.site-user {
+
+    color: whitesmoke;
+    background-color: #006dad;
+}
+
+.site-user a {
+
+    color: whitesmoke;
+    text-decoration: none;
+}
+
+.site-user a:hover {
+
+    color: lightgray;
+}
+
+footer a {
+    color: whitesmoke;
+    text-decoration: none;
+}
+
+footer a:hover {
+    color: lightgray;
+}
+
+.destacado {
+    color: whitesmoke;
+    background-color: #006dad;
+}
+
+.title {
+    color: #0073b7;
+    background-color: #eaedf0;
+}
+
+.tabla-encabezado {
+    color: whitesmoke;
+    background-color: #0073b7;
+}
+
+.table-striped-custom tbody tr:nth-of-type(odd) {
+    background-color: #f0f8ff;
+}
+
+.table-striped-custom tbody tr:nth-of-type(even) {
+    background-color: white;
+}
+
+.section-title {
+    font-weight: bold;
+    color: #0073b7;
+    background-color: white;
+}
+
+.section-subtitle {
+    font-weight: bold;
+    color: grey;
+    background-color: white;
+}

@@ -1,0 +1,131 @@
+
+<!-- Inicio jquery local a la página -->
+<script src="/static/external/js/jquery-3.6.4.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        $("#modalError").modal('show');
+
+        /* Construcción del modal de la confirmación de eliminación */
+        $(".btn-secondary").click(function() {
+            let id_usuario = $(this).attr("id");
+            $("#confirmar-eliminacion").attr("data-value", id_usuario);
+            let primer_apellido = $("#primer_apellido-" + id_usuario).text();
+            let nom_preferido = $("#nom_preferido-" + id_usuario).text();
+            let nom_usuario = nom_preferido + " " + primer_apellido
+            $("#mensaje-modal").text("¿Está seguro que desea eliminar el usuario \"" + nom_usuario + "\"?");
+        });
+
+        /* Manejo de la confirmación de la eliminación */
+        $("#confirmar-eliminacion").click(function() {
+            let id_usuario = $(this).attr("data-value");
+            $(location).prop("href", "/usuario/eliminar/" + id_usuario);
+        });
+    });
+</script>
+<!-- Fin jquery local a la página -->
+
+<div metal:use-macro="load: ../shared/_layout-principal.pt">
+    <div metal:fill-slot="content" tal:omit-tag="True">
+        <div class="content">
+            <div class="container">
+                <!-- Definir primero columnas de bootstrap -->
+                <div class="row align-items-center">
+                    <!-- Inicio contenido -->
+
+                    <!-- Inicio zona visible de usuario conectado -->
+                    <div tal:condition="esta_conectado" tal:omit-tag="True">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <h4 class="section-title">Usuarios</h4>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-2">
+                                <a href="/usuario" type="button" class="btn btn-warning mb-3">Agregar</a>
+                            </div>
+                        </div>
+
+                        <table class="table table-striped-custom">
+                            <thead class="tabla-encabezado">
+                                <tr>
+                                    <th scope="col">Login</th>
+                                    <th scope="col">Primer apellido</th>
+                                    <th scope="col">Segundo apellido</th>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Carrera</th>
+                                    <th scope="col">Perfil</th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr tal:repeat="u usuarios"  tal:omit-tag="False">
+                                    <td id="login-${u.id_usuario}">${u.login}</td>
+                                    <td id="primer_apellido-${u.id_usuario}">${u.primer_apellido}</td>
+                                    <td id="segundo_apellido-${u.id_usuario}">${u.segundo_apellido}</td>
+                                    <td id="nom_preferido-${u.id_usuario}">${u.nom_preferido}</td>
+                                    <td id="nom_carrera-${u.id_usuario}">${u.nom_carrera}</td>
+                                    <td id="nom_perfil-${u.id_usuario}">${u.nom_perfil}</td>
+                                    <td>
+                                        <a href="/usuario/${u.id_usuario}"><button type="button" class="btn btn-warning">Modificar</button></a>
+                                    </td>
+                                    <td>
+                                        <button id="${u.id_usuario}" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalEliminacion">Eliminar</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Inicio modal de confirmación de eliminación -->
+                        <div class="modal fade" id="modalEliminacion" tabindex="-1" aria-labelledby="modal-confirmacion" aria-hidden="true">
+                            <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="modal-confirmacion">Eliminar</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div id="mensaje-modal" class="modal-body"></div>
+                                <div class="modal-footer">
+                                <button id="confirmar-eliminacion" data-value="id_usuario_eliminar" type="button" class="btn btn-warning" data-bs-dismiss="modal">Eliminar</button>
+                                <button id="cancelar-eliminacion" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <!-- Fin modal de confirmación de eliminación -->
+
+                        <!-- Inicio modal de error en la eliminación -->
+                        <div tal:condition="msg_error" tal:omit-tag="False" class="modal fade" id="modalError" tabindex="-1" aria-labelledby="modal-error" aria-hidden="true">
+                            <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="modal-error">Error</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div id="mensaje-modal" class="modal-body">${msg_error}</div>
+                                <div class="modal-footer">
+                                <button id="confirmar-cerrado" type="button" class="btn btn-warning" data-bs-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <!-- Fin modal de confirmación de eliminación -->
+
+
+                    </div>
+                    <!-- Fin zona visible de usuario conectado -->
+
+                    <!-- Fin contenido -->
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- CSS adicional -->
+    <div metal:fill-slot="additional-css" tal:omit-tag="True">
+    </div>
+</div>

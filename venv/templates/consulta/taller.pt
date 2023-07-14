@@ -1,0 +1,128 @@
+
+<div metal:use-macro="load: ../shared/_layout-principal.pt">
+    <div metal:fill-slot="content" tal:omit-tag="True">
+        <div class="content">
+
+            <div class="container">
+                <!-- Inicio fila para ingresar columnas de bootstrap -->
+                <div class="row align-items-center">
+                    <!-- Inicio contenido -->
+
+                    <!-- Inicio zona visible de usuario conectado -->
+                    <div tal:condition="esta_conectado" tal:omit-tag="True">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <h4 class="section-title">Consulta &#8211; Taller</h4>
+                                <h5 class="section-subtitle">${sigla} - ${nom_asignatura}</h5>
+                                <h6 class="section-subtitle">Semana ${semana} - ${titulo_preparacion}</h6>
+                                <h6 class="fst-italic pb-2">${detalle_preparacion}</h6>
+                                <p id="sigla" class="d-none">${sigla}</p>
+                                <p id="id-taller" class="d-none">${id_taller}</p>
+                                <p id="semana" class="d-none">${semana}</p>
+                            </div>
+                        </div>
+
+                        <div tal:condition="cod_perfil_conectado==0 or cod_perfil_conectado==1" tal:omit-tag="True" class="row pt-2 pb-2">
+                            <div class="col-12">
+                              <h4 class="section-title">Total: ${'${:,}'.format(consulta.total)}</h4>
+                            </div>
+                        </div>
+
+                        <div class="item" tal:repeat="t consulta['tablas']" tal:omit-tag="True">
+                          <div class="accordion" id="accordionExample">
+                            <div class="accordion-item">
+                              <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${t.id_agrupador}" aria-expanded="false" aria-controls="collapse-${t.id_agrupador}">
+                                  <b>${t.agrupador}</b><span tal:condition="cod_perfil_conectado==0 or cod_perfil_conectado==1" tal:omit-tag="True" >&nbsp;&#8211; Subtotal ${'${:,}'.format(t.subtotal)}</span>
+                                </button>
+                              </h2>
+                              <div id="collapse-${t.id_agrupador}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+
+                                  <table class="table table-striped-custom">
+                                    <thead class="tabla-encabezado">
+                                        <tr>
+                                            <th scope="col">Producto</th>
+                                            <th class="text-center" scope="col">Unidad</th>
+                                            <th class="text-center" scope="col">Cantidad</th>
+                                            <th tal:condition="cod_perfil_conectado==0 or cod_perfil_conectado==1" tal:omit-tag="False" class="text-end" scope="col">Precio unitario</th>
+                                            <th tal:condition="cod_perfil_conectado==0 or cod_perfil_conectado==1" tal:omit-tag="False" class="text-end" scope="col">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr tal:repeat="p t.productos"  tal:omit-tag="False">
+                                            <td>${p.nom_producto}</td>
+                                            <td class="text-center">${p.nom_unidad_medida}</td>
+                                            <td class="text-center">${p.cantidad}</td>
+                                            <td tal:condition="cod_perfil_conectado==0 or cod_perfil_conectado==1" tal:omit-tag="False" class="text-end">${'${:,}'.format(p.precio)}</td>
+                                            <td tal:condition="cod_perfil_conectado==0 or cod_perfil_conectado==1" tal:omit-tag="False" class="text-end">${'${:,}'.format(p.total)}</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot tal:condition="cod_perfil_conectado==0 or cod_perfil_conectado==1" tal:omit-tag="True">
+                                      <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td class="text-end font-weight-bold"><h5>Subtotal ${t.agrupador.lower()}</h5></td>
+                                        <td class="text-end font-weight-bold"><h5>${'${:,}'.format(t.subtotal)}</h5></td>
+                                      </tr>
+                                    </tfoot>
+                                  </table>
+        
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Inicio modal de confirmación de eliminación -->
+                        <div class="modal fade" id="modalEliminacion" tabindex="-1" aria-labelledby="modal-confirmacion" aria-hidden="true">
+                            <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="modal-confirmacion">Eliminar</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div id="mensaje-modal" class="modal-body"></div>
+                                <div class="modal-footer">
+                                <button id="confirmar-eliminacion" data-value="id_producto_eliminar" type="button" class="btn btn-warning" data-bs-dismiss="modal">Eliminar</button>
+                                <button id="cancelar-eliminacion" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <!-- Fin modal de confirmación de eliminación -->
+
+                        <!-- Inicio modal de error en la eliminación -->
+                        <div tal:condition="msg_error" tal:omit-tag="False" class="modal fade" id="modalError" tabindex="-1" aria-labelledby="modal-error" aria-hidden="true">
+                            <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="modal-error">Error</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div id="mensaje-modal" class="modal-body">${msg_error}</div>
+                                <div class="modal-footer">
+                                <button id="confirmar-cerrado" type="button" class="btn btn-warning" data-bs-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <!-- Fin modal de confirmación de eliminación -->
+
+                    </div>
+                    <!-- Fin zona visible de usuario conectado -->
+
+                    <!-- Fin contenido -->
+                </div>
+                <!-- Fin fila para ingresar columnas de bootstrap -->
+            </div>
+
+        </div>
+    </div>
+
+    <!-- CSS adicional -->
+    <div metal:fill-slot="additional-css" tal:omit-tag="True">
+    </div>
+</div>

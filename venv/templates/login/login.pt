@@ -1,0 +1,45 @@
+
+<div metal:use-macro="load: ../shared/_layout-index.pt">
+    <div metal:fill-slot="content" tal:omit-tag="True">
+        <div class="content">
+
+            <!-- Ingrese contenido acá -->
+            <div class="container-fluid">
+                <!-- Definir primero columnas de bootstrap -->
+                <div class="row align-items-center">
+                    <div class="col-4"></div>
+                    <div class="destacado col-4">
+
+                        <form class="py-4" action="/login" method="post">
+                        <div class="mb-3">
+                            <label for="login" class="form-label">Usuario</label>
+                            <input tal:condition="login" name="login" maxlength="40" type="email" class="form-control" id="login" aria-describedby="emailHelp" value="${login}" required placeholder="(Ingrese correo DuocUC)" maxlength="40">
+                            <input tal:condition="not login" name="login" maxlength="40" type="email" class="form-control" id="login" aria-describedby="emailHelp" value="${login}" autofocus required placeholder="(Ingrese correo DuocUC)" maxlength="40">
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Contraseña</label>
+                            <input tal:condition="login" name="password" maxlength="40" type="password" class="form-control" id="password" autofocus required placeholder="(Ingrese contraseña)" maxlength="40">
+                            <input tal:condition="not login" name="password" maxlength="40" type="password" class="form-control" id="password" required placeholder="(Ingrese contraseña)" maxlength="40">
+                        </div>
+                        <button type="submit" class="btn btn-warning ps-3 pe-3 pb-2 me-2">Aceptar</button>
+                        <a class="btn btn-secondary ps-3 pr-3 pb-2 me-2" href="/">Cancelar</a>
+                        </form>
+
+
+                        <div tal:condition="msg_error" class="alert alert-danger" role="alert">
+                            <b>Error</b>: ${msg_error}
+                        </div>
+
+
+                    </div>
+                    <div class="col-4"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- CSS adicional -->
+    <div metal:fill-slot="additional-css" tal:omit-tag="True">
+    </div>
+</div>

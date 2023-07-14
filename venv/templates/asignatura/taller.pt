@@ -1,0 +1,145 @@
+
+<script src="/static/external/js/jquery-3.6.4.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function() {
+
+        $('#msg-error-local').hide();
+
+        $('#formulario').submit(function(e) {
+            let detalle_preparacion = $('#detalle-preparacion').val();
+            if (detalle_preparacion.trim().length === 0) {
+                // Mostrar mensaje de error en la zona de errores
+                var mensajeError = "<b>Error</b>: Debe especificar un detalle de la preparación."
+
+                $('#msg-error-local').show();
+                $('#msg-error-local').html(mensajeError);
+
+                e.preventDefault(); // Evitar el envío del formulario
+            }
+
+        });
+
+      /* Leemos el mensaje para determinar si viene desde la grabación del formulario y mostrar el mensaje de grabación o no */
+      method = $("#method").text();
+      if (method != "GET") {
+      /* Grabó, mostramos el mensaje y redirijimos lapágina al anchor del mensaje */
+        $('html,body').animate({ scrollTop: $("#anchor-error").offset().top }, 'fast');
+      }
+  
+    });
+  
+</script>
+  
+<div metal:use-macro="load: ../shared/_layout-principal.pt">
+    <div metal:fill-slot="content" tal:omit-tag="True">
+        <div class="content">
+
+            <div class="container">
+                <!-- Inicio fila para ingresar columnas de bootstrap -->
+                <div class="row align-items-center">
+                    <!-- Inicio contenido -->
+
+                    <!-- Inicio zona visible de usuario conectado -->
+                    <div tal:condition="esta_conectado" tal:omit-tag="True">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <h4 class="section-title">Talleres &#8211; Semana</h4>
+                                <h5 class="section-subtitle">${sigla} - ${nom_asignatura}</h5>
+                                <p id="sigla" class="d-none">${sigla}</p>
+                            </div>
+                        </div>
+
+                        <div class="container-fluid">
+                            <!-- Definir primero columnas de bootstrap -->
+                            <div class="row align-items-center">
+                                <div class="destacado col-12">
+
+                                    <form class="pt-2 pb-4" method="post" id="formulario" enctype="multipart/form-data">
+                                        <div class="row pb-3 d-none">
+                                            <div class="col-1">
+                                                <div class="form-group d-none">
+                                                    <label for="id-taller" class="form-label d-none">Id</label>
+                                                    <input name="id-taller" maxlength="10" type="text" class="form-control d-none" id="id-taller" aria-describedby="emailHelp" value="${taller.id_taller}">
+                                                </div>
+                                            </div>
+                                            <div class="col-11"></div>
+                                        </div>
+
+                                        <div class="row pb-3 d-none">
+                                            <div class="col-2">
+                                                <div class="form-group d-none">
+                                                    <label for="sigla" class="form-label d-none">Sigla</label>
+                                                    <input name="sigla" maxlength="15" type="text" class="form-control d-none" id="sigla" aria-describedby="emailHelp" value="${taller.sigla}">
+                                                </div>
+                                            </div>
+                                            <div class="col-10"></div>
+                                        </div>
+
+                                        <div class="row pb-3">
+                                            <div class="col-1">
+                                                <div class="form-group">
+                                                    <label for="semana" class="form-label">Semana</label>
+                                                    <input name="semana" maxlength="2" type="number" class="form-control" id="semana" aria-describedby="emailHelp" value="${taller.semana}" required min="1">
+                                                </div>
+                                            </div>
+                                            <div class="col-11"></div>
+                                        </div>
+
+                                        <div class="row pb-3">
+                                            <div class="col-5">
+                                                <div class="form-group">
+                                                    <label for="titulo-preparacion" class="form-label">Título preparación</label>
+                                                    <input name="titulo-preparacion" maxlength="100" type="text" class="form-control" id="titulo-preparacion" aria-describedby="emailHelp" value="${taller.titulo_preparacion}" required maxlength="100">
+                                                </div>
+                                            </div>
+                                            <div class="col-7"></div>
+                                        </div>
+
+                                        <div class="row pb-3">
+                                            <div class="col-4">
+                                                <div class="form-group">
+                                                    <label for="detalle-preparacion" class="form-label">Detalle preparación</label>
+                                                    <textarea name="detalle-preparacion" id="detalle-preparacion" rows="10" cols="100">${taller.detalle_preparacion}</textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-8"></div>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-warning" id="enviar">Guardar</button>
+                                        <a class="btn btn-secondary" href="/asignatura/${taller.sigla}/taller/lista" role="button">Volver</a>
+                                        <a tal:condition="taller.id_taller!=0" class="btn btn-dark" href="/asignatura/${taller.sigla}/taller/${taller.id_taller}/producto/lista" role="button">Configurar</a>
+
+                                    </form>
+                                    <div id="msg-error-local" class="alert alert-danger" role="alert">aller
+                             
+                                    </div>
+                                    <div id="anchor-error"></div>
+                                    <div id="msg-error" tal:condition="msg_error" class="alert alert-danger" role="alert">
+                                        ${msg_error}
+                                    </div>
+                                    <div id="msg_exito" tal:condition="method != 'GET' and not msg_error" class="alert alert-warning" role="alert">
+                                        ${msg_exito}
+                                    </div>
+                                    <div id="method" class="alert alert-success m-4 pt-3 d-none" role="alert">${method}</div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- Fin zona visible de usuario conectado -->
+
+                    <!-- Fin contenido -->
+                </div>
+                <!-- Fin fila para ingresar columnas de bootstrap -->
+            </div>
+
+        </div>
+    </div>
+
+    <!-- CSS adicional -->
+    <div metal:fill-slot="additional-css" tal:omit-tag="True">
+    </div>
+</div>

@@ -1,0 +1,148 @@
+
+<!-- Inicio jquery local a la página -->
+<script src="/static/external/js/jquery-3.6.4.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        $("#modalError").modal('show');
+
+        /* Construcción del modal de la confirmación de eliminación */
+        $(".btn-secondary").click(function() {
+            let texto = $(this).attr("id");
+            let textos = texto.split("|")
+            let id_taller = textos[0];
+            let id_producto = textos[1];
+            let cod_agrupador = textos[2]
+            $("#confirmar-eliminacion").attr("data-value", texto);
+            let nom_producto = $("#nom-producto-" + id_producto).text();
+            let semana = $("#semana").text();
+            $("#mensaje-modal").text("¿Está seguro que desea eliminar el producto \"" + nom_producto + "\" para el taller de la semana " + semana + "?");
+        });
+
+        /* Manejo de la confirmación de la eliminación */
+        $("#confirmar-eliminacion").click(function() {
+            let sigla = $("#sigla").text();
+            let texto = $(this).attr("data-value");
+            let textos = texto.split("|")
+            let id_taller = textos[0];
+            let id_producto = textos[1];
+            let cod_agrupador = textos[2]
+            $(location).prop("href", "/asignatura/" + sigla + "/eliminar/taller/" + id_taller + "/producto/" + id_producto + "/agrupador/" + cod_agrupador);
+        });
+    });
+</script>
+<!-- Fin jquery local a la página -->
+
+<div metal:use-macro="load: ../shared/_layout-principal.pt">
+    <div metal:fill-slot="content" tal:omit-tag="True">
+        <div class="content">
+
+            <div class="container">
+                <!-- Inicio fila para ingresar columnas de bootstrap -->
+                <div class="row align-items-center">
+                    <!-- Inicio contenido -->
+
+                    <!-- Inicio zona visible de usuario conectado -->
+                    <div tal:condition="esta_conectado" tal:omit-tag="True">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <h4 class="section-title">Talleres &#8211; Productos</h4>
+                                <h5 class="section-subtitle">${sigla} - ${nom_asignatura}</h5>
+                                <h6 class="section-subtitle">Semana ${semana} - ${titulo_preparacion}</h6>
+                                <p id="sigla" class="d-none">${sigla}</p>
+                                <p id="id-taller" class="d-none">${id_taller}</p>
+                                <p id="semana" class="d-none">${semana}</p>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-2">
+                                <a href="/asignatura/${sigla}/taller/${id_taller}/producto/agrupador" type="button" class="btn btn-warning mb-3">Agregar</a>
+                            </div>
+                        </div>
+
+                        <table class="table table-striped-custom">
+                            <thead class="tabla-encabezado">
+                                <tr>
+                                    <th scope="col">Agrupador</th>
+                                    <th scope="col">Categoría</th>
+                                    <th scope="col">Producto</th>
+                                    <th scope="col">Unidad</th>
+                                    <th class="text-end" scope="col">Precio unitario</th>
+                                    <th class="text-end" scope="col">Cantidad</th>
+                                    <th class="text-end" scope="col">Total</th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr tal:repeat="p productos"  tal:omit-tag="False">
+                                    <td id="nom-agrupador-${p.id_producto}">${p.nom_agrupador}</td>
+                                    <td id="nom-categ-producto-${p.id_producto}">${p.nom_categ_producto}</td>
+                                    <td id="nom-producto-${p.id_producto}">${p.nom_producto}</td>
+                                    <td id="nom-unidad-medida-${p.id_producto}">${p.nom_unidad_medida}</td>
+                                    <td class="text-end" id="precio-${p.id_producto}">${'${:,}'.format(p.precio)}</td>
+                                    <td class="text-end" id="cantidad-${p.id_producto}">${'{:,.2f}'.format(p.cantidad)}</td>
+                                    <td class="text-end" id="total-${p.id_producto}">${'${:,}'.format(p.total)}</td>
+                                    <td>
+                                        <a href="/asignatura/${sigla}/taller/${id_taller}/producto/${p.id_producto}/agrupador/${p.cod_agrupador}"><button type="button" class="btn btn-warning">Modificar</button></a>
+                                    </td>
+                                    <td>
+                                        <button id="${p.id_taller}|${p.id_producto}|${p.cod_agrupador}" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalEliminacion">Eliminar</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Inicio modal de confirmación de eliminación -->
+                        <div class="modal fade" id="modalEliminacion" tabindex="-1" aria-labelledby="modal-confirmacion" aria-hidden="true">
+                            <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="modal-confirmacion">Eliminar</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div id="mensaje-modal" class="modal-body"></div>
+                                <div class="modal-footer">
+                                <button id="confirmar-eliminacion" data-value="id_producto_eliminar" type="button" class="btn btn-warning" data-bs-dismiss="modal">Eliminar</button>
+                                <button id="cancelar-eliminacion" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <!-- Fin modal de confirmación de eliminación -->
+
+                        <!-- Inicio modal de error en la eliminación -->
+                        <div tal:condition="msg_error" tal:omit-tag="False" class="modal fade" id="modalError" tabindex="-1" aria-labelledby="modal-error" aria-hidden="true">
+                            <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="modal-error">Error</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div id="mensaje-modal" class="modal-body">${msg_error}</div>
+                                <div class="modal-footer">
+                                <button id="confirmar-cerrado" type="button" class="btn btn-warning" data-bs-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <!-- Fin modal de confirmación de eliminación -->
+
+                    </div>
+                    <!-- Fin zona visible de usuario conectado -->
+
+                    <!-- Fin contenido -->
+                </div>
+                <!-- Fin fila para ingresar columnas de bootstrap -->
+            </div>
+
+        </div>
+    </div>
+
+    <!-- CSS adicional -->
+    <div metal:fill-slot="additional-css" tal:omit-tag="True">
+    </div>
+</div>

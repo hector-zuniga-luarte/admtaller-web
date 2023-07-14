@@ -1,0 +1,96 @@
+
+<div metal:use-macro="load: ../shared/_layout-principal.pt">
+    <div metal:fill-slot="content" tal:omit-tag="True">
+        <div class="content">
+
+            <div class="container">
+                <!-- Inicio fila para ingresar columnas de bootstrap -->
+                <div class="row align-items-center">
+                    <!-- Inicio contenido -->
+
+                    <!-- Inicio zona visible de usuario conectado -->
+                    <div tal:condition="esta_conectado" tal:omit-tag="True">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <h4 class="section-title">Registro</h4>
+                            </div>
+                        </div>
+
+                        <table class="table table-striped-custom">
+                            <thead class="tabla-encabezado">
+                                <tr>
+                                    <th class="d-none" scope="col">Año académico</th>
+                                    <th scope="col">Período académico</th>
+                                    <th class="text-center" scope="col">Sigla</th>
+                                    <th scope="col">Asignatura</th>
+                                    <th class="text-center" scope="col">Sección</th>
+                                    <th scope="col">Carrera</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr tal:repeat="ra registros_asignatura"  tal:omit-tag="False">
+                                    <td class="text-center d-none" id="ano-academ-${ra.ano_academ}">${ra.ano_academ}</td>
+                                    <td id="nom-periodo-academ-${ra.ano_academ}${ra.cod_periodo_academ}${ra.sigla}${ra.seccion}">${ra.nom_periodo_academ}</td>
+                                    <td class="text-center" id="sigla-${ra.ano_academ}${ra.cod_periodo_academ}${ra.sigla}|${ra.seccion}">${ra.sigla}</td>
+                                    <td id="nom-asignatura-${ra.ano_academ}${ra.cod_periodo_academ}${ra.sigla}${ra.seccion}">${ra.nom_asignatura}</td>
+                                    <td class="text-center" id="seccion-${ra.ano_academ}${ra.cod_periodo_academ}${ra.sigla}${ra.seccion}">${ra.seccion}</td>
+                                    <td id="nom-carrera-${ra.ano_academ}${ra.cod_periodo_academ}${ra.sigla}${ra.seccion}">${ra.nom_carrera}</td>
+                                    <td>
+                                        <a href="/registro/asignatura/${ra.sigla}/periodo/${ra.cod_periodo_academ}/seccion/${ra.seccion}/lista"><button id="configure-${ra.ano_academ}" type="button" class="btn btn-warning">Registrar</button></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Inicio modal de confirmación de eliminación -->
+                        <div class="modal fade" id="modalEliminacion" tabindex="-1" aria-labelledby="modal-confirmacion" aria-hidden="true">
+                            <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="modal-confirmacion">Eliminar</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div id="mensaje-modal" class="modal-body"></div>
+                                <div class="modal-footer">
+                                <button id="confirmar-eliminacion" data-value="ano_academ|cod_periodo_academ|sigla|seccion" type="button" class="btn btn-warning" data-bs-dismiss="modal">Eliminar</button>
+                                <button id="cancelar-eliminacion" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <!-- Fin modal de confirmación de eliminación -->
+
+                        <!-- Inicio modal de error en la eliminación -->
+                        <div tal:condition="msg_error" tal:omit-tag="False" class="modal fade" id="modalError" tabindex="-1" aria-labelledby="modal-error" aria-hidden="true">
+                            <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="modal-error">Error</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div id="mensaje-modal" class="modal-body">${msg_error}</div>
+                                <div class="modal-footer">
+                                <button id="confirmar-cierre" type="button" class="btn btn-warning" data-bs-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <!-- Fin modal de confirmación de eliminación -->
+
+                    </div>
+                    <!-- Fin zona visible de usuario conectado -->
+
+                    <!-- Fin contenido -->
+                </div>
+                <!-- Fin fila para ingresar columnas de bootstrap -->
+            </div>
+
+        </div>
+    </div>
+
+    <!-- CSS adicional -->
+    <div metal:fill-slot="additional-css" tal:omit-tag="True">
+    </div>
+</div>

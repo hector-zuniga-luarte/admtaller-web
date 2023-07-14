@@ -1,0 +1,237 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema de administración de talleres DuocUC</title>
+
+    <!-- Bibliotecas externas -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="/static/external/css/bootstrap.min.css">
+
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" href="/static/css/site.css">
+
+    <!-- favico -->
+    <link rel="shortcut icon" type="image/x-icon" href="/static/img/favicon.ico">
+
+    <!-- CSS adicional de chameleon -->
+    <div metal:define-slot="additional-css"  tal:omit-tag="True"></div>
+</head>
+<body>
+
+<!-- Inicio header de la página -->
+<header>
+
+    <!-- Inicio barra de información de usuario -->
+    <div class="container-fluid site-header">
+        <div class="row align-items-center">
+            <div class="col-6 text-start">
+                <span tal:condition="esta_conectado"><h5>Año ${ano_academ}</h5></span>
+            </div>
+            <div class="col-6 text-end">
+                <div class="dropdown" tal:condition="esta_conectado">
+                    <button class="btn btn-transparent dropdown-toggle text-light" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span>${login_conectado}</span><span tal:condition="esta_conectado and nom_carrera"> (${nom_carrera})</span>
+                    </button>
+                    <ul class="dropdown-menu bg-body-secondary text-dark" aria-labelledby="userDropdown">
+                        <li><a class="dropdown-item bg-body-light text-dark" href="/password">Cambiar contraseña</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item bg-body-light text-dark" href="/logout">Salir</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin barra de información de usuario -->
+
+
+    <!-- Inicio contenedor navbar del sistema -->
+    <div class="container-fluid site-header">
+        <div class="row align-items-center">
+            <div class="col-12 text-start">
+
+                <!-- Inicio navbar menú administrador de sistema -->
+                <nav class="navbar navbar-expand-lg site-header">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="/principal"><h1><b>DuocUC</b></h1></a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                        </button>
+
+                        <!-- Inicio menú administrador de sistema -->
+                        <div tal:condition="esta_conectado and cod_perfil_conectado == 0" class="collapse navbar-collapse" id="navbarNavDropdown">
+                            <ul class="navbar-nav">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Administración
+                                    </a>
+                                    <ul class="dropdown-menu bg-body-secondary text-dark">
+                                        <li><a class="dropdown-item bg-body-light text-dark" href="/param/lista">Parámetros</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item bg-body-light text-dark" href="/usuario/lista">Usuarios</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item bg-body-light text-dark" href="/asignatura/lista">Talleres</a></li>
+                                        <li><a class="dropdown-item bg-body-light text-dark" href="/programacion/asignatura/lista">Programación</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item bg-body-light text-dark" href="/producto/lista">Productos</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item bg-body-light text-dark" href="/registro/asignatura/lista">Registro</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Consultas
+                                    </a>
+                                    <ul class="dropdown-menu bg-body-secondary text-dark">
+                                        <li><a class="dropdown-item bg-body-light text-dark" href="/consulta/asignatura/lista">Taller</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Reportes
+                                    </a>
+                                    <ul class="dropdown-menu bg-body-secondary text-dark">
+                                        <li><a class="dropdown-item bg-body-light text-dark" href="/reporte/1">Valorización por taller</a></li>
+                                        <li><a class="dropdown-item bg-body-light text-dark" href="/reporte/2">Presupuesto estimado por asignatura</a></li>
+                                        <li><a class="dropdown-item bg-body-light text-dark" href="/reporte/3">Asignación y registro de docentes</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- Fin menú administrador de sistema -->
+
+                        <!-- Inicio menú administrador de carrera -->
+                        <div tal:condition="esta_conectado and cod_perfil_conectado == 1" class="collapse navbar-collapse" id="navbarNavDropdown">
+                            <ul class="navbar-nav">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Administración
+                                    </a>
+                                    <ul class="dropdown-menu bg-body-secondary text-dark">
+                                        <li><a class="dropdown-item bg-body-light text-dark" href="/param/lista">Parámetros</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item bg-body-light text-dark" href="/usuario/lista">Usuarios</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item bg-body-light text-dark" href="/asignatura/lista">Talleres</a></li>
+                                        <li><a class="dropdown-item bg-body-light text-dark" href="/programacion/asignatura/lista">Programación</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item bg-body-light text-dark" href="/producto/lista">Productos</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item bg-body-light text-dark" href="/registro/asignatura/lista">Registro</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Consultas
+                                    </a>
+                                    <ul class="dropdown-menu bg-body-secondary text-dark">
+                                        <li><a class="dropdown-item bg-body-light text-dark" href="/consulta/asignatura/lista">Taller</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Reportes
+                                    </a>
+                                    <ul class="dropdown-menu bg-body-secondary text-dark">
+                                        <li><a class="dropdown-item bg-body-light text-dark" href="/reporte/1">Valorización por taller</a></li>
+                                        <li><a class="dropdown-item bg-body-light text-dark" href="/reporte/2">Presupuesto estimado por asignatura</a></li>
+                                        <li><a class="dropdown-item bg-body-light text-dark" href="/reporte/3">Asignación y registro de docentes</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- Fin menú administrador de carrera -->
+
+                        <!-- Inicio menú docente -->
+                        <div tal:condition="esta_conectado and cod_perfil_conectado == 2" class="collapse navbar-collapse" id="navbarNavDropdown">
+                            <ul class="navbar-nav">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Administración
+                                    </a>
+                                    <ul class="dropdown-menu bg-body-secondary text-dark">
+                                        <li><a class="dropdown-item bg-body-light text-dark" href="/registro/asignatura/lista">Registro</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Consultas
+                                    </a>
+                                    <ul class="dropdown-menu bg-body-secondary text-dark">
+                                        <li><a class="dropdown-item bg-body-light text-dark" href="/consulta/asignatura/lista">Taller</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- Fin menú docente -->
+
+                    </div>
+                </nav>
+
+            </div>
+        </div>
+    </div>
+    <!-- Fin contenedor navbar del sistema -->
+
+</header>
+<!-- Fin header de la página -->
+
+<!-- Inicio zona de contenido principal a insertar -->
+<div class="main_content py-4">
+
+    <!-- Inicio zona mensaje de error por no tener acceso al sistema  -->
+    <div class="container" tal:condition="not esta_conectado" tal:omit-tag="False">
+        <div class="row align-items-center">
+
+            <div >
+                <div class="card border-0">
+                    <h5 class="card-header destacado">Acceso denegado</h5>
+                    <div class="card-body title">
+                        <h5 class="card-title">No se puede acceder a las funcionalidades del sistema</h5>
+                        <p class="card-text">${msg_error}</p>
+                        <a href="/login" class="btn btn-warning">Ingresar</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Fin zona mensaje de error por no tener acceso al sistema  -->
+
+    <!-- Inicio zona de contenido de la página  -->
+    <div metal:define-slot="content" tal:omit-tag="True">Sin contenido</div>
+    <!-- Fin zona de contenido de la página  -->
+
+</div>
+<!-- Fin zona de contenido principal a insertar -->
+
+<!-- Inicio footer de la página -->
+<footer class="site-header py-4">
+    <div class="container-fluid">
+        <div class="row text-center">
+            <div class="col-1"></div>
+            <div class="col-10">Proyecto de portafolio de título</div>
+            <div class="col-1"></div>
+            <div class="col-1"></div>
+            <div class="col-10">&copy; 2023 DuocUC. Todos los derechos reservados.</div>
+            <div class="col-1"></div>
+        </div>
+    </div>
+</footer>
+<!-- Fin footer de la página -->
+
+<!-- Bibliotecas externas de javascript -->
+<script src="/static/external/js/jquery-3.6.4.min.js"></script>
+<script src="/static/external/js/popper.min.js"></script>
+<script src="/static/external/js/bootstrap.min.js"></script>
+
+<!-- javascript adicional de chameleon -->
+<div metal:define-slot="additional-js" tal:omit-tag="True"></div>
+
+</body>
+</html>

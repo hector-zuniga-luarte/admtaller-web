@@ -1,0 +1,42 @@
+
+<div metal:use-macro="load: ../shared/_layout-principal.pt">
+    <div metal:fill-slot="content" tal:omit-tag="True">
+        <div class="content">
+
+            <div class="container">
+                <!-- Definir primero columnas de bootstrap -->
+                <div class="row align-items-center">
+                    <!-- Inicio contenido -->
+
+                    <!-- Inicio zona visible de usuario conectado -->
+                    <div tal:condition="esta_conectado" tal:omit-tag="True">
+
+                        <div class="dashboard" tal:repeat="d dashboard" tal:omit-tag="True">
+                            <h1><span class="badge title mt-4">${d.nom_carrera}</span></h1>
+                            <div class="dashboard p-2" tal:repeat="r d.resumen" tal:omit-tag="True">
+                                <div class="col-lg-3 col-md-6 col-sm-12">
+                                    <div class="card destacado text-center mb-3" style="width: 18rem;">
+                                    <div class="card-body">
+                                        <h2 class="card-title">${r.concepto}</h2>
+                                        <h1><span class="badge text-bg-warning">${r.valor}</span></h1>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                    </div>
+                    <!-- Fin zona visible de usuario conectado -->
+
+                    <!-- Fin contenido -->
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- CSS adicional -->
+    <div metal:fill-slot="additional-css" tal:omit-tag="True">
+    </div>
+</div>

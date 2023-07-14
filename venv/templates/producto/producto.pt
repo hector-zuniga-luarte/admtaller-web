@@ -1,0 +1,143 @@
+
+<script src="/static/external/js/jquery-3.6.4.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function() {
+
+        $('#msg-error-local').hide();
+
+        $('#formulario').submit(function(e) {
+            let cod_unidad_medida = $('#cod-unidad-medida').val();
+
+            if (cod_unidad_medida.trim().length === 0) {
+                // Mostrar mensaje de error en la zona de errores
+                var mensajeError = "<b>Error</b>: Debe ingresar la unidad de medida del producto"
+
+                $('#msg-error-local').show();
+                $('#msg-error-local').html(mensajeError);
+
+                $('html,body').animate({ scrollTop: $("#anchor-error").offset().top }, 'fast');
+
+                e.preventDefault(); // Evitar el envío del formulario
+            }
+
+        });
+
+      /* Leemos el mensaje para determinar si viene desde la grabación del formulario y mostrar el mensaje de grabación o no */
+      method = $("#method").text();
+      if (method != "GET") {
+      /* Grabó, mostramos el mensaje y redirijimos la página al anchor del mensaje */
+        $('html,body').animate({ scrollTop: $("#anchor-error").offset().top }, 'fast');
+      }
+  
+    });
+  
+</script>
+
+<div metal:use-macro="load: ../shared/_layout-principal.pt">
+    <div metal:fill-slot="content" tal:omit-tag="True">
+        <div class="content">
+
+            <div class="container">
+                <!-- Inicio fila para ingresar columnas de bootstrap -->
+                <div class="row align-items-center">
+                    <!-- Inicio contenido -->
+
+                    <!-- Inicio zona visible de usuario conectado -->
+                    <div tal:condition="esta_conectado" tal:omit-tag="True">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <h4 class="section-title">Producto</h4>
+                            </div>
+                        </div>
+
+                        <div class="container-fluid">
+                            <!-- Definir primero columnas de bootstrap -->
+                            <div class="row align-items-center">
+                                <div class="destacado col-12">
+
+                                    <form class="pt-2 pb-4" method="post" id="formulario" enctype="multipart/form-data" tal:attributes="action '/producto' if producto.id_producto == 0 else '/producto/' + str(producto.id_producto)">
+
+                                        <input name="id-producto" maxlength="40" type="hidden" class="form-control" id="id-producto" aria-describedby="emailHelp" value="${producto.id_producto}" required maxlength="40">
+
+                                        <div class="row pb-3">
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label for="producto" class="form-label">Nombre</label>
+                                                    <input name="nom-producto" maxlength="100" type="text" class="form-control" id="nom-producto" aria-describedby="emailHelp" value="${producto.nom_producto}" required maxlength="100" autofocus>
+                                                </div>
+                                            </div>
+                                            <div class="col-6"></div>
+                                        </div>
+
+                                        <div class="row pb-3">
+                                            <div class="col-2">
+                                                <div class="form-group">
+                                                    <label for="precio" class="form-label">Precio</label>
+                                                    <input name="precio" step="1" maxlength="2" type="number" class="form-control" id="precio" aria-describedby="emailHelp" value="${producto.precio}" required min="1">
+                                                </div>
+                                            </div>
+                                            <div class="col-10"></div>
+                                        </div>
+
+                                        <div class="row pb-3">
+                                            <div class="col-4">
+                                                <div class="form-group">
+                                                    <label for="cod-unidad-medida" class="form-label">Unidad de medida</label>
+                                                    <select id="cod-unidad-medida" name="cod-unidad-medida" class="form-select" aria-label="Default select example">
+                                                        <option value="">(Seleccione unidad de medida)</option>
+                                                        <option tal:repeat="um lista_unidad_medida" tal:attributes="value um.cod_unidad_medida; selected python:str(um.cod_unidad_medida) == str(producto.cod_unidad_medida) and 'selected' or None">${um.nom_unidad_medida}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-8"></div>
+                                        </div>
+
+                                        <div class="row pb-3">
+                                            <div class="col-4">
+                                                <div class="form-group">
+                                                    <label for="cod-categ-producto" class="form-label">Categoría</label>
+                                                    <select name="cod-categ-producto" class="form-select" aria-label="Default select example">
+                                                        <option tal:repeat="cp lista_categoria_producto" tal:attributes="value cp.cod_categ_producto; selected python:str(cp.cod_categ_producto) == str(producto.cod_categ_producto) and 'selected' or None">${cp.nom_categ_producto}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-8"></div>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-warning" id="enviar">Guardar</button>
+                                        <a class="btn btn-secondary" href="/producto/lista" role="button">Volver</a>
+
+                                    </form>
+                                    <div id="msg-error-local" class="alert alert-danger" role="alert">
+                             
+                                    </div>
+                                    <div id="anchor-error"></div>
+                                    <div id="msg-error" tal:condition="msg_error" class="alert alert-danger" role="alert">
+                                        ${msg_error}
+                                    </div>
+                                    <div id="msg_exito" tal:condition="method != 'GET' and not msg_error" class="alert alert-warning" role="alert">
+                                        ${msg_exito}
+                                    </div>
+                                    <div id="method" class="alert alert-success m-4 pt-3 d-none" role="alert">${method}</div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- Fin zona visible de usuario conectado -->
+
+                    <!-- Fin contenido -->
+                </div>
+                <!-- Fin fila para ingresar columnas de bootstrap -->
+            </div>
+
+        </div>
+    </div>
+
+    <!-- CSS adicional -->
+    <div metal:fill-slot="additional-css" tal:omit-tag="True">
+    </div>
+</div>

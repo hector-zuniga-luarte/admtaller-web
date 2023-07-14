@@ -1,0 +1,219 @@
+
+<script src="/static/external/js/jquery-3.6.4.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function() {
+
+        $('#msg-error-local').hide();
+
+        $('#formulario').submit(function(e) {
+            var idUsuario = $('#id-usuario').val();
+            var password = $('#password').val();
+            var confirmacionPassword = $('#confirmacion-password').val();
+
+            if ((idUsuario === 0) && (password.trim().length === 0) && (confirmacionPassword.trim().length !== 0)) {
+                // Mostrar mensaje de error en la zona de errores
+                var mensajeError = "<b>Error</b>: Debe ingresar la contraseña al usuario"
+
+                $('#msg-error-local').show();
+                $('#msg-error-local').html(mensajeError);
+
+                e.preventDefault(); // Evitar el envío del formulario
+            }
+
+            if ((password !== confirmacionPassword) && ((password.trim().length !== 0) || (confirmacionPassword.trim().length !== 0))) {
+                // Mostrar mensaje de error en la zona de errores
+                var mensajeError = "<b>Error</b>: La confirmación de la contraseña no coincide"
+
+                $('#msg-error-local').show();
+                $('#msg-error-local').html(mensajeError);
+
+                e.preventDefault(); // Evitar el envío del formulario
+            }
+        });
+
+      /* Leemos el mensaje para determinar si viene desde la grabación del formulario y mostrar el mensaje de grabación o no */
+      method = $("#method").text();
+      if (method != "GET") {
+      /* Grabó, mostramos el mensaje y redirijimos lapágina al anchor del mensaje */
+        $('html,body').animate({ scrollTop: $("#anchor-error").offset().top }, 'fast');
+      }
+  
+    });
+  
+</script>
+  
+<div metal:use-macro="load: ../shared/_layout-principal.pt">
+    <div metal:fill-slot="content" tal:omit-tag="True">
+        <div class="content">
+
+            <div class="container">
+                <!-- Inicio fila para ingresar columnas de bootstrap -->
+                <div class="row align-items-center">
+                    <!-- Inicio contenido -->
+
+                    <!-- Inicio zona visible de usuario conectado -->
+                    <div tal:condition="esta_conectado" tal:omit-tag="True">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <h4 class="section-title">Usuario</h4>
+                            </div>
+                        </div>
+
+                        <div class="container-fluid">
+                            <!-- Definir primero columnas de bootstrap -->
+                            <div class="row align-items-center">
+                                <div class="destacado col-12">
+
+                                    <form class="pt-2 pb-4" method="post" id="formulario" enctype="multipart/form-data" tal:attributes="action '/usuario' if usuario.id_usuario == 0 else '/usuario/' + str(usuario.id_usuario)">
+                                        <div class="row pb-3">
+                                            <div class="col-1">
+                                                <div class="form-group">
+                                                    <label for="id-usuario" class="form-label d-none">Id</label>
+                                                    <input name="id-usuario" maxlength="40" type="number" type="hidden" class="form-control d-none" id="id-usuario" aria-describedby="emailHelp" value="${usuario.id_usuario}" maxlength="40">
+                                                </div>
+                                            </div>
+                                            <div class="col-11"></div>
+                                        </div>
+
+                                        <div class="row pb-3">
+                                            <div class="col-4">
+                                                <div class="form-group">
+                                                    <label for="login" class="form-label">Usuario</label>
+                                                    <input name="login" maxlength="40" type="email" class="form-control" id="login" aria-describedby="emailHelp" value="${usuario.login}" required maxlength="40">
+                                                </div>
+                                            </div>
+                                            <div class="col-8"></div>
+                                        </div>
+
+                                        <div class="row pb-3">
+                                            <div class="col-4">
+                                                <div class="form-group">
+                                                    <label for="login" class="form-label">Primer apellido</label>
+                                                    <input name="primer-apellido" maxlength="40" type="text" class="form-control" id="primer-apellido" aria-describedby="emailHelp" value="${usuario.primer_apellido}" required maxlength="40">
+                                                </div>
+                                            </div>
+                                            <div class="col-8"></div>
+                                        </div>
+
+                                        <div class="row pb-3">
+                                            <div class="col-4">
+                                                <div class="form-group">
+                                                    <label for="login" class="form-label">Segundo apellido</label>
+                                                    <input name="segundo-apellido" maxlength="40" type="text" class="form-control" id="segundo-apellido" aria-describedby="emailHelp" value="${usuario.segundo_apellido}" required maxlength="40">
+                                                </div>
+                                            </div>
+                                            <div class="col-8"></div>
+                                        </div>
+
+                                        <div class="row pb-3">
+                                            <div class="col-4">
+                                                <div class="form-group">
+                                                    <label for="nom" class="form-label">Nombres</label>
+                                                    <input name="nom" maxlength="40" type="text" class="form-control" id="nom" aria-describedby="emailHelp" value="${usuario.nom}" required maxlength="40">
+                                                </div>
+                                            </div>
+                                            <div class="col-8"></div>
+                                        </div>
+
+                                        <div class="row pb-3">
+                                            <div class="col-4">
+                                                <div class="form-group">
+                                                    <label for="nom-preferido" class="form-label">Nombre preferido</label>
+                                                    <input name="nom-preferido" maxlength="40" type="text" class="form-control" id="nom-preferido" aria-describedby="emailHelp" value="${usuario.nom_preferido}" required maxlength="40">
+                                                </div>
+                                            </div>
+                                            <div class="col-8"></div>
+                                        </div>
+
+                                        <div class="row pb-3">
+                                            <div class="col-4">
+                                                <div class="form-group">
+                                                    <label for="cod-perfil" class="form-label">Perfil</label>
+                                                    <select name="cod-perfil" class="form-select" aria-label="Default select example">
+                                                        <option tal:repeat="p lista_perfil" tal:attributes="value p.cod_perfil; selected python:str(p.cod_perfil) == str(usuario.cod_perfil) and 'selected' or None">${p.nom_perfil}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-8"></div>
+                                        </div>
+
+                                        <div class="row pb-3">
+                                            <div class="col-4">
+                                                <div class="form-group">
+                                                    <label for="carrera" class="form-label">Carrera</label>
+                                                    <select name="cod-carrera" class="form-select" aria-label="Default select example">
+                                                        <option tal:repeat="c lista_carrera" tal:attributes="value c.cod_carrera; selected python:str(c.cod_carrera) == str(usuario.cod_carrera) and 'selected' or None">${c.nom_carrera}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-8"></div>
+                                        </div>
+
+                                        <div class="row pb-3">
+                                            <div class="col-4">
+                                                <button tal:condition="usuario.id_usuario != 0" type="button" class="btn btn-danger" data-bs-toggle="collapse" data-bs-target="#formularioCollapse" tal:omit-tag="False">
+                                                    Cambiar password
+                                                </button>
+
+                                                <div tal:attributes="class 'collapse show' if usuario.id_usuario == 0 else 'collapse'" id="formularioCollapse">
+                                                    <div tal:attributes="class 'row pb-3' if usuario.id_usuario == 0 else 'row pb-3 pt-3'">
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                        <label for="password" class="form-label">Contraseña</label>
+                                                        <input id="password" name="password" maxlength="40" type="password" class="form-control" id="password" aria-describedby="emailHelp" value="" maxlength="40">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-8"></div>
+                                                    </div>
+                                                
+                                                    <div class="row pb-3">
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                        <label for="confirmacion-password" class="form-label">Confirmar contraseña</label>
+                                                        <input id="confirmacion-password" name="confirmacion-password" maxlength="40" type="password" class="form-control" id="conf-password" aria-describedby="emailHelp" value="" maxlength="40">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-8"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                          
+                                        <button type="submit" class="btn btn-warning" id="enviar">Guardar</button>
+                                        <a class="btn btn-secondary" href="/usuario/lista" role="button">Volver</a>
+
+                                    </form>
+                                    <div id="msg-error-local" class="alert alert-danger" role="alert">
+                             
+                                    </div>
+                                    <div id="anchor-error"></div>
+                                    <div id="msg-error" tal:condition="msg_error" class="alert alert-danger" role="alert">
+                                        ${msg_error}
+                                    </div>
+                                    <div id="msg_exito" tal:condition="method != 'GET' and not msg_error" class="alert alert-warning" role="alert">
+                                        ${msg_exito}
+                                    </div>
+                                    <div id="method" class="alert alert-success m-4 pt-3 d-none" role="alert">${method}</div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- Fin zona visible de usuario conectado -->
+
+                    <!-- Fin contenido -->
+                </div>
+                <!-- Fin fila para ingresar columnas de bootstrap -->
+            </div>
+
+        </div>
+    </div>
+
+    <!-- CSS adicional -->
+    <div metal:fill-slot="additional-css" tal:omit-tag="True">
+    </div>
+</div>

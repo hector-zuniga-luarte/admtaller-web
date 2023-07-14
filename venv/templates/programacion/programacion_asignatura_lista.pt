@@ -1,0 +1,141 @@
+
+<!-- Inicio jquery local a la página -->
+<script src="/static/external/js/jquery-3.6.4.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        $("#modalError").modal('show');
+
+        /* Construcción del modal de la confirmación de eliminación */
+        $(".btn-secondary").click(function() {
+            let texto = $(this).attr("id");
+            let textos = texto.split("|");
+            let ano_academ = textos[0];
+            let cod_periodo_academ = textos[1];
+            let sigla = textos[2];
+            let seccion = textos[3];
+            $("#confirmar-eliminacion").attr("data-value", texto);
+            let nom_periodo_academ = $("#nom-periodo-academ-" + ano_academ + cod_periodo_academ + sigla + seccion).text();
+            let nom_asignatura = $("#nom-asignatura-" + ano_academ + cod_periodo_academ + sigla + seccion).text();
+            $("#mensaje-modal").text("¿Está seguro que desea eliminar la programación de la sección " + seccion + " para la asignatura \"" + sigla + " - " + nom_asignatura + "\" para el " + nom_periodo_academ.toLowerCase() + "?");
+        });
+
+        /* Manejo de la confirmación de la eliminación */
+        $("#confirmar-eliminacion").click(function() {
+            let texto = $(this).attr("data-value");
+            let textos = texto.split("|")
+            let ano_academ = textos[0];
+            let cod_periodo_academ = textos[1];
+            let sigla = textos[2];
+            let seccion = textos[3];
+            $(location).prop("href", "/programacion/eliminar/ano_academ/" + ano_academ + "/periodo/" + cod_periodo_academ + "/sigla/" + sigla + "/seccion/" + seccion);
+        });
+    });
+</script>
+<!-- Fin jquery local a la página -->
+
+<div metal:use-macro="load: ../shared/_layout-principal.pt">
+    <div metal:fill-slot="content" tal:omit-tag="True">
+        <div class="content">
+
+            <div class="container">
+                <!-- Inicio fila para ingresar columnas de bootstrap -->
+                <div class="row align-items-center">
+                    <!-- Inicio contenido -->
+
+                    <!-- Inicio zona visible de usuario conectado -->
+                    <div tal:condition="esta_conectado" tal:omit-tag="True">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <h4 class="section-title">Programación</h4>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-2">
+                                <a href="/programacion/asignatura/periodo/seccion" type="button" class="btn btn-warning mb-3">Agregar</a>
+                            </div>
+                        </div>
+
+                        <table class="table table-striped-custom">
+                            <thead class="tabla-encabezado">
+                                <tr>
+                                    <th class="d-none" scope="col">Año académico</th>
+                                    <th scope="col">Período académico</th>
+                                    <th class="text-center" scope="col">Sigla</th>
+                                    <th scope="col">Asignatura</th>
+                                    <th class="text-center" scope="col">Sección</th>
+                                    <th scope="col">Carrera</th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr tal:repeat="pa programaciones_asignatura"  tal:omit-tag="False">
+                                    <td class="text-center d-none" id="ano-academ-${pa.ano_academ}">${pa.ano_academ}</td>
+                                    <td id="nom-periodo-academ-${pa.ano_academ}${pa.cod_periodo_academ}${pa.sigla}${pa.seccion}">${pa.nom_periodo_academ}</td>
+                                    <td class="text-center" id="sigla-${pa.ano_academ}${pa.cod_periodo_academ}${pa.sigla}|${pa.seccion}">${pa.sigla}</td>
+                                    <td id="nom-asignatura-${pa.ano_academ}${pa.cod_periodo_academ}${pa.sigla}${pa.seccion}">${pa.nom_asignatura}</td>
+                                    <td class="text-center" id="seccion-${pa.ano_academ}${pa.cod_periodo_academ}${pa.sigla}${pa.seccion}">${pa.seccion}</td>
+                                    <td id="nom-carrera-${pa.ano_academ}${pa.cod_periodo_academ}${pa.sigla}${pa.seccion}">${pa.nom_carrera}</td>
+                                    <td>
+                                        <button id="${pa.ano_academ}|${pa.cod_periodo_academ}|${pa.sigla}|${pa.seccion}" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalEliminacion">Eliminar</button>
+                                    </td>
+                                    <td>
+                                        <a href="/programacion/asignatura/${pa.sigla}/periodo/${pa.cod_periodo_academ}/seccion/${pa.seccion}/lista"><button id="configure-${pa.ano_academ}" type="button" class="btn btn-dark">Configurar</button></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Inicio modal de confirmación de eliminación -->
+                        <div class="modal fade" id="modalEliminacion" tabindex="-1" aria-labelledby="modal-confirmacion" aria-hidden="true">
+                            <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="modal-confirmacion">Eliminar</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div id="mensaje-modal" class="modal-body"></div>
+                                <div class="modal-footer">
+                                <button id="confirmar-eliminacion" data-value="ano_academ|cod_periodo_academ|sigla|seccion" type="button" class="btn btn-warning" data-bs-dismiss="modal">Eliminar</button>
+                                <button id="cancelar-eliminacion" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <!-- Fin modal de confirmación de eliminación -->
+
+                        <!-- Inicio modal de error en la eliminación -->
+                        <div tal:condition="msg_error" tal:omit-tag="False" class="modal fade" id="modalError" tabindex="-1" aria-labelledby="modal-error" aria-hidden="true">
+                            <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="modal-error">Error</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div id="mensaje-modal" class="modal-body">${msg_error}</div>
+                                <div class="modal-footer">
+                                <button id="confirmar-cierre" type="button" class="btn btn-warning" data-bs-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <!-- Fin modal de confirmación de eliminación -->
+
+                    </div>
+                    <!-- Fin zona visible de usuario conectado -->
+
+                    <!-- Fin contenido -->
+                </div>
+                <!-- Fin fila para ingresar columnas de bootstrap -->
+            </div>
+
+        </div>
+    </div>
+
+    <!-- CSS adicional -->
+    <div metal:fill-slot="additional-css" tal:omit-tag="True">
+    </div>
+</div>

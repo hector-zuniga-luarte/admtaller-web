@@ -1,0 +1,146 @@
+
+<script src="/static/external/js/jquery-3.6.4.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function() {
+
+        $('#msg-error-local').hide();
+
+
+        $('#formulario').submit(function(e) {
+            var id_taller = $('#id-taller').val();
+            var id_usuario = $('#id-usuario').val();
+
+            if (id_taller.trim() === "") {
+                // Mostrar mensaje de error en la zona de errores
+                var mensajeError = "<b>Error</b>: Debe seleccionar el taller a asignar"
+
+                $('#msg-error-local').show();
+                $('#msg-error-local').html(mensajeError);
+
+                e.preventDefault(); // Evitar el envío del formulario
+            }
+
+            if (id_usuario.trim() === "") {
+                // Mostrar mensaje de error en la zona de errores
+                var mensajeError = "<b>Error</b>: Debe seleccionar el docente a asignar"
+
+                $('#msg-error-local').show();
+                $('#msg-error-local').html(mensajeError);
+
+                e.preventDefault(); // Evitar el envío del formulario
+            }
+
+        });
+
+      /* Leemos el mensaje para determinar si viene desde la grabación del formulario y mostrar el mensaje de grabación o no */
+      method = $("#method").text();
+      if (method != "GET") {
+      /* Grabó, mostramos el mensaje y redirijimos la página al anchor del mensaje */
+        $('html,body').animate({ scrollTop: $("#anchor-error").offset().top }, 'fast');
+      }
+  
+    });
+  
+</script>
+
+
+<div metal:use-macro="load: ../shared/_layout-principal.pt">
+    <div metal:fill-slot="content" tal:omit-tag="True">
+        <div class="content">
+
+            <div class="container">
+                <!-- Inicio fila para ingresar columnas de bootstrap -->
+                <div class="row align-items-center">
+                    <!-- Inicio contenido -->
+
+                    <!-- Inicio zona visible de usuario conectado -->
+                    <div tal:condition="esta_conectado" tal:omit-tag="True">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <h4 class="section-title">Programación - Taller</h4>
+                                <h5 class="section-subtitle">${nom_periodo_academ}</h5>
+                                <h6 class="section-subtitle">${sigla} - ${nom_asignatura} - Sección ${seccion}</h6>
+                            </div>
+                        </div>
+
+                        <div class="container-fluid">
+                            <!-- Definir primero columnas de bootstrap -->
+                            <div class="row align-items-center">
+                                <div class="destacado col-12">
+
+                                    <form class="pt-2 pb-4" method="post" id="formulario" enctype="multipart/form-data" tal:attributes="action '/programacion/asignatura/' + sigla + '/periodo/' + str(cod_periodo_academ) + '/seccion/' + str(seccion) + '/taller/fecha' if id_usuario == 0 else '/programacion/asignatura/' + programacion.sigla + '/periodo/' + str(programacion.cod_periodo_academ) + '/seccion/' + str(programacion.seccion) + '/taller/' + str(programacion.id_taller) + '/fecha/' + programacion.fecha">
+
+                                        <div class="row pb-3">
+                                            <div class="col-3">
+                                                <div class="form-group">
+                                                    <label for="producto" class="form-label">Fecha</label>
+                                                    <input tal:condition="id_usuario==0 or msg_error" name="fecha" type="date" class="form-control" id="fecha" aria-describedby="emailHelp" value="${fecha}">
+                                                    <input tal:condition="id_usuario!=0 and not msg_error" name="fecha" type="text" class="form-control" id="fecha" aria-describedby="emailHelp" value="${programacion.fecha_formato_largo}" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="col-6"></div>
+                                        </div>
+
+                                        <div class="row pb-3">
+                                            <div class="col-5">
+                                                <div class="form-group">
+                                                    <label for="id-taller" class="form-label">Taller</label>
+                                                    <select tal:condition="id_usuario==0 or msg_error" id="id-taller" name="id-taller" class="form-select" aria-label="Default select example">
+                                                        <option value="">(Seleccione taller)</option>
+                                                        <option tal:repeat="t lista_talleres" value="${t.id_taller}">Semana ${t.semana} - ${t.titulo_preparacion}</option>
+                                                    </select>
+                                                    <input tal:condition="id_usuario!=0 and not msg_error" name="id-taller" type="text" class="form-control" id="id-taller" aria-describedby="emailHelp" value="Semana ${programacion.semana} - ${programacion.titulo_preparacion}" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="col-4"></div>
+                                        </div>
+
+                                        <div class="row pb-3">
+                                            <div class="col-4">
+                                                <div class="form-group">
+                                                    <label for="id-usuario" class="form-label">Docente asignado</label>
+                                                    <select id="id-usuario" name="id-usuario" class="form-select" aria-label="Default select example">
+                                                        <option value="">(Seleccione usuario)</option>
+                                                        <option tal:repeat="u lista_usuarios" tal:attributes="value u.id_usuario; selected python:str(u.id_usuario) == str(id_usuario) and 'selected' or None">${u.primer_apellido} ${u.segundo_apellido} ${u.nom_preferido}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-8"></div>
+                                        </div>
+                                          
+                                        <button type="submit" class="btn btn-warning" id="enviar">Guardar</button>
+                                        <a id="nuevo" class="btn btn-secondary" href="/programacion/asignatura/${sigla}/periodo/${cod_periodo_academ}/seccion/${seccion}/lista" role="button">Volver</a>
+
+                                    </form>
+                                    <div id="msg-error-local" class="alert alert-danger" role="alert">
+                                    </div>
+                                    <div id="anchor-error"></div>
+                                    <div id="msg-error" tal:condition="msg_error" class="alert alert-danger" role="alert">
+                                        ${msg_error}
+                                    </div>
+                                    <div id="msg_exito" tal:condition="method != 'GET' and not msg_error" class="alert alert-warning" role="alert">
+                                        ${msg_exito}
+                                    </div>
+                                    <div id="method" class="alert alert-success m-4 pt-3 d-none" role="alert">${method}</div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- Fin zona visible de usuario conectado -->
+
+                    <!-- Fin contenido -->
+                </div>
+                <!-- Fin fila para ingresar columnas de bootstrap -->
+            </div>
+
+        </div>
+    </div>
+
+    <!-- CSS adicional -->
+    <div metal:fill-slot="additional-css" tal:omit-tag="True">
+    </div>
+</div>

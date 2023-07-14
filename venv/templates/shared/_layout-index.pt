@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema de administración de talleres DuocUC</title>
+
+    <!-- Bibliotecas externas -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/static/external/css/bootstrap.min.css">
+
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" href="/static/css/site.css">
+
+    <!-- favico -->
+    <link rel="shortcut icon" type="image/x-icon" href="/static/img/favicon.ico">
+
+    <!-- CSS adicional de chameleon -->
+    <div metal:define-slot="additional-css"  tal:omit-tag="True"></div>
+</head>
+<body>
+
+<!-- Inicio header de la página -->
+<header>
+
+    <!-- Inicio barra de información de usuario. Se mantiene para que sea consistente con la página principal. Se deja sin texto -->
+    <div class="container-fluid site-header">
+        <div class="row align-items-center">
+            <div class="col-12 text-sm-start text-lg-end">
+                <br>
+            </div>
+        </div>
+    </div>
+    <!-- Fin barra de información de usuario -->
+
+    <!-- Inicio contenedor navbar del sistema -->
+    <div class="container-fluid site-header">
+        <div class="row align-items-center">
+            <div class="col-12 text-start">
+
+                <!-- Inicio navbar menú administrador de sistema -->
+                <nav class="navbar navbar-expand-lg site-header">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="/"><h1><b>DuocUC</b></h1></a>
+                    </div>
+                </nav>
+                <!-- Fin navbar menú administrador de sistema -->
+
+            </div>
+        </div>
+    </div>
+    <!-- Fin contenedor navbar del sistema -->
+
+</header>
+<!-- Fin header de la página -->
+
+<!-- Inicio zona de contenido principal a insertar -->
+<div class="main_content py-4">
+    <div metal:define-slot="content" tal:omit-tag="True">Sin contenido</div>
+</div>
+<!-- Fin zona de contenido principal a insertar -->
+
+<!-- Inicio footer de la página -->
+<footer class="site-header py-4">
+    <div class="container-fluid">
+        <div class="row text-center">
+            <div class="col-1"></div>
+            <div class="col-10">Proyecto de portafolio de título</div>
+            <div class="col-1"></div>
+            <div class="col-1"></div>
+            <div class="col-10">&copy; 2023 DuocUC. Todos los derechos reservados.</div>
+            <div class="col-1"></div>
+        </div>
+    </div>
+</footer>
+<!-- Fin footer de la página -->
+
+<!-- Bibliotecas externas de javascript -->
+<script src="/static/external/js/jquery-3.6.4.min.js"></script>
+<script src="/static/external/js/popper.min.js"></script>
+<script src="/static/external/js/bootstrap.min.js"></script>
+
+<!-- javascript adicional de chameleon -->
+<div metal:define-slot="additional-js" tal:omit-tag="True"></div>
+
+</body>
+</html>

@@ -1,0 +1,72 @@
+
+<div metal:use-macro="load: ../shared/_layout-principal.pt">
+    <div metal:fill-slot="content" tal:omit-tag="True">
+        <div class="content">
+
+            <div class="container">
+                <!-- Inicio fila para ingresar columnas de bootstrap -->
+                <div class="row align-items-center">
+                    <!-- Inicio contenido -->
+
+                    <!-- Inicio zona visible de usuario conectado -->
+                    <div tal:condition="esta_conectado" tal:omit-tag="True">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <h4 class="section-title">Reporte valorización de talleres</h4>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-1">
+                                <a href="/reporte/1/pdf" type="button" class="btn btn-warning mb-3" style="width: 100px">PDF</a>
+                            </div>
+                            <div class="col-1">
+                                <a href="/reporte/1/excel" type="button" class="btn btn-warning mb-3" style="width: 100px">Excel</a>
+                            </div>
+                            <div class="col-10">
+                            </div>
+                        </div>
+
+                        <table class="table table-striped-custom">
+                            <thead class="tabla-encabezado">
+                                <tr>
+                                    <th scope="col">Carrera</th>
+                                    <th class="text-center" scope="col">Sigla</th>
+                                    <th scope="col">Asignatura</th>
+                                    <th class="text-center" scope="col">Semana</th>
+                                    <th scope="col">Titulo preparación</th>
+                                    <th scope="col">Costo taller</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr tal:repeat="r registros"  tal:omit-tag="False">
+                                    <td>${r.nom_carrera}</td>
+                                    <td class="text-center">${r.sigla}</td>
+                                    <td>${r.nom_asign}</td>
+                                    <td class="text-center" >${r.semana}</td>
+                                    <td>${r.titulo_preparacion}</td>
+                                    <td class="text-end">${'${:,}'.format(r.total_taller)}</td>
+                                    <td>
+                                        <a href="/consulta/asignatura/${r.sigla}/taller/${r.id_taller}"><button type="button" class="btn btn-dark" style="width: 120px">Consultar</button></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <!-- Fin zona visible de usuario conectado -->
+
+                    <!-- Fin contenido -->
+                </div>
+                <!-- Fin fila para ingresar columnas de bootstrap -->
+            </div>
+
+        </div>
+    </div>
+
+    <!-- CSS adicional -->
+    <div metal:fill-slot="additional-css" tal:omit-tag="True">
+    </div>
+</div>

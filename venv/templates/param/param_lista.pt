@@ -1,0 +1,62 @@
+
+<!-- Inicio jquery local a la página -->
+<script src="/static/external/js/jquery-3.6.4.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#modalError").modal('show');
+    });
+</script>
+<!-- Fin jquery local a la página -->
+
+<div metal:use-macro="load: ../shared/_layout-principal.pt">
+    <div metal:fill-slot="content" tal:omit-tag="True">
+        <div class="content">
+            <div class="container">
+                <!-- Definir primero columnas de bootstrap -->
+                <div class="row align-items-center">
+                    <!-- Inicio contenido -->
+
+                    <!-- Inicio zona visible de usuario conectado -->
+                    <div tal:condition="esta_conectado" tal:omit-tag="True">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <h4 class="section-title">Parámetros</h4>
+                            </div>
+                        </div>
+
+                        <table class="table table-striped-custom">
+                            <thead class="tabla-encabezado">
+                                <tr>
+                                    <th class="text-center" scope="col">Código</th>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Valor</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr tal:repeat="p params"  tal:omit-tag="False">
+                                    <td class="text-center" id="cod-param-${p.cod_param}">${p.cod_param}</td>
+                                    <td id="nom-param-${p.cod_param}">${p.nom_param}</td>
+                                    <td id="valor-${p.cod_param}">${p.valor}</td>
+                                    <td>
+                                        <a href="/param/${p.cod_param}"><button type="button" class="btn btn-warning">Modificar</button></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <!-- Fin zona visible de usuario conectado -->
+
+                    <!-- Fin contenido -->
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- CSS adicional -->
+    <div metal:fill-slot="additional-css" tal:omit-tag="True">
+    </div>
+</div>

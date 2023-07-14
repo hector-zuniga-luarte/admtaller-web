@@ -1,0 +1,127 @@
+
+<!-- Inicio jquery local a la página -->
+<script src="/static/external/js/jquery-3.6.4.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        $("#modalError").modal('show');
+
+        /* Construcción del modal de la confirmación de eliminación */
+        $(".btn-secondary").click(function() {
+            let id_producto = $(this).attr("id");
+            $("#confirmar-eliminacion").attr("data-value", id_producto);
+            let nom_producto = $("#nom-producto-" + id_producto).text();
+            $("#mensaje-modal").text("¿Está seguro que desea eliminar el producto \"" + nom_producto + "\"?");
+        });
+
+        /* Manejo de la confirmación de la eliminación */
+        $("#confirmar-eliminacion").click(function() {
+            let id_producto = $(this).attr("data-value");
+            $(location).prop("href", "/producto/eliminar/" + id_producto);
+        });
+    });
+</script>
+<!-- Fin jquery local a la página -->
+
+<div metal:use-macro="load: ../shared/_layout-principal.pt">
+    <div metal:fill-slot="content" tal:omit-tag="True">
+        <div class="content">
+
+            <div class="container">
+                <!-- Inicio fila para ingresar columnas de bootstrap -->
+                <div class="row align-items-center">
+                    <!-- Inicio contenido -->
+
+                    <!-- Inicio zona visible de usuario conectado -->
+                    <div tal:condition="esta_conectado" tal:omit-tag="True">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <h4 class="section-title">Productos</h4>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-2">
+                                <a href="/producto" type="button" class="btn btn-warning mb-3">Agregar</a>
+                            </div>
+                        </div>
+
+                        <table class="table table-striped-custom">
+                            <thead class="tabla-encabezado">
+                                <tr>
+                                    <th scope="col">Producto</th>
+                                    <th class="text-end" scope="col">Precio unitario</th>
+                                    <th scope="col">Unidad</th>
+                                    <th scope="col">Categoría</th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr tal:repeat="p productos"  tal:omit-tag="False">
+                                    <td id="nom-producto-${p.id_producto}">${p.nom_producto}</td>
+                                    <td class="text-end" id="precio-${p.id_producto}">${'${:,}'.format(p.precio)}</td>
+                                    <td id="${p.id_producto}">${p.nom_unidad_medida}</td>
+                                    <td id="${p.id_producto}">${p.nom_categ_producto}</td>
+                                    <td>
+                                        <a href="/producto/${p.id_producto}"><button type="button" class="btn btn-warning">Modificar</button></a>
+                                    </td>
+                                    <td>
+                                        <button id="${p.id_producto}" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalEliminacion">Eliminar</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Inicio modal de confirmación de eliminación -->
+                        <div class="modal fade" id="modalEliminacion" tabindex="-1" aria-labelledby="modal-confirmacion" aria-hidden="true">
+                            <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="modal-confirmacion">Eliminar</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div id="mensaje-modal" class="modal-body"></div>
+                                <div class="modal-footer">
+                                <button id="confirmar-eliminacion" data-value="id_producto_eliminar" type="button" class="btn btn-warning" data-bs-dismiss="modal">Eliminar</button>
+                                <button id="cancelar-eliminacion" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <!-- Fin modal de confirmación de eliminación -->
+
+                        <!-- Inicio modal de error en la eliminación -->
+                        <div tal:condition="msg_error" tal:omit-tag="False" class="modal fade" id="modalError" tabindex="-1" aria-labelledby="modal-error" aria-hidden="true">
+                            <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="modal-error">Error</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div id="mensaje-modal" class="modal-body">${msg_error}</div>
+                                <div class="modal-footer">
+                                <button id="confirmar-cerrado" type="button" class="btn btn-warning" data-bs-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <!-- Fin modal de confirmación de eliminación -->
+
+                    </div>
+                    <!-- Fin zona visible de usuario conectado -->
+
+                    <!-- Fin contenido -->
+                </div>
+                <!-- Fin fila para ingresar columnas de bootstrap -->
+            </div>
+
+        </div>
+    </div>
+
+    <!-- CSS adicional -->
+    <div metal:fill-slot="additional-css" tal:omit-tag="True">
+    </div>
+</div>

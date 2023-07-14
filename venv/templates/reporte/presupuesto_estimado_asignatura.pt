@@ -1,0 +1,84 @@
+
+<div metal:use-macro="load: ../shared/_layout-principal.pt">
+    <div metal:fill-slot="content" tal:omit-tag="True">
+        <div class="content">
+
+            <div class="container">
+                <!-- Inicio fila para ingresar columnas de bootstrap -->
+                <div class="row align-items-center">
+                    <!-- Inicio contenido -->
+
+                    <!-- Inicio zona visible de usuario conectado -->
+                    <div tal:condition="esta_conectado" tal:omit-tag="True">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <h4 class="section-title">Reporte presupuesto estimado asignatura</h4>
+                                <h5 class="section-subtitle">Año académico ${ano_academ}</h5>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-1">
+                                <a href="/reporte/2/pdf" type="button" class="btn btn-warning mb-3" style="width: 100px">PDF</a>
+                            </div>
+                            <div class="col-1">
+                                <a href="/reporte/2/excel" type="button" class="btn btn-warning mb-3" style="width: 100px">Excel</a>
+                            </div>
+                            <div class="col-10">
+                            </div>
+                        </div>
+
+                        <table class="table table-striped-custom">
+                            <thead class="tabla-encabezado">
+                                <tr>
+                                    <th scope="col">Carrera</th>
+                                    <th class="text-center" scope="col">Sigla</th>
+                                    <th scope="col">Asignatura</th>
+                                    <th class="text-center" scope="col">Cantidad de secciones</th>
+                                    <th class="text-end" scope="col">Total por sección</th>
+                                    <th class="text-end" scope="col">Total</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr tal:repeat="r registros"  tal:omit-tag="False">
+                                    <td>${r.nom_carrera}</td>
+                                    <td class="text-center">${r.sigla}</td>
+                                    <td>${r.nom_asign}</td>
+                                    <td class="text-center">${r.total_seccion}</td>
+                                    <td class="text-end">${'${:,}'.format(r.total_asign)}</td>
+                                    <td class="text-end">${'${:,}'.format(r.total)}</td>
+                                    <td>
+                                        <a href="/consulta/asignatura/${r.sigla}/taller/lista"><button type="button" class="btn btn-dark" style="width: 120px">Consultar</button></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot tal:condition="cod_perfil_conectado==0 or cod_perfil_conectado==1" tal:omit-tag="True">
+                                <tr>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td class="text-end font-weight-bold"><h5>Total</h5></td>
+                                  <td class="text-end font-weight-bold"><h5>${'${:,}'.format(total)}</h5></td>
+                                  <td></td>
+                                </tr>
+                              </tfoot>
+                        </table>
+
+                    </div>
+                    <!-- Fin zona visible de usuario conectado -->
+
+                    <!-- Fin contenido -->
+                </div>
+                <!-- Fin fila para ingresar columnas de bootstrap -->
+            </div>
+
+        </div>
+    </div>
+
+    <!-- CSS adicional -->
+    <div metal:fill-slot="additional-css" tal:omit-tag="True">
+    </div>
+</div>

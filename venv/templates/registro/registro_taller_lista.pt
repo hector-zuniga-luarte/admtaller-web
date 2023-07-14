@@ -1,0 +1,103 @@
+
+<div metal:use-macro="load: ../shared/_layout-principal.pt">
+    <div metal:fill-slot="content" tal:omit-tag="True">
+        <div class="content">
+
+            <div class="container">
+                <!-- Inicio fila para ingresar columnas de bootstrap -->
+                <div class="row align-items-center">
+                    <!-- Inicio contenido -->
+
+                    <!-- Inicio zona visible de usuario conectado -->
+                    <div tal:condition="esta_conectado" tal:omit-tag="True">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <h4 class="section-title">Registro &#8211; Taller</h4>
+                                <h5 class="section-subtitle">${nom_periodo_academ}</h5>
+                                <h6 class="section-subtitle">${sigla} - ${nom_asignatura} - Sección ${seccion}</h6>
+                            </div>
+                        </div>
+
+                        <table class="table table-striped-custom">
+                            <thead class="tabla-encabezado">
+                                <tr>
+                                    <th width="120" nowrap class="text-center" scope="col">Fecha</th>
+                                    <th class="text-center" scope="col">Semana</th>
+                                    <th scope="col">Preparación</th>
+                                    <th scope="col">Docente asignado</th>
+                                    <th scope="col">Observaciones</th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr tal:repeat="rt registros_taller"  tal:omit-tag="False">
+                                    <td width="120" nowrap class="text-center" id="ano-academ-${rt.ano_academ}">${rt.fecha_formato_corto}</td>
+                                    <td class="text-center" id="nom-periodo-academ-${rt.ano_academ}${rt.cod_periodo_academ}${rt.sigla}${rt.seccion}">${rt.semana}</td>
+                                    <td id="sigla-${rt.ano_academ}${rt.cod_periodo_academ}${rt.sigla}|${rt.seccion}">${rt.titulo_preparacion}</td>
+                                    <td id="sigla-${rt.ano_academ}${rt.cod_periodo_academ}${rt.sigla}|${rt.seccion}">${rt.nom_preferido} ${rt.primer_apellido} ${rt.segundo_apellido}</td>
+                                    <td id="sigla-${rt.ano_academ}${rt.cod_periodo_academ}${rt.sigla}|${rt.seccion}">${rt.obs}</td>
+                                    <td>
+                                        <a tal:condition="rt.indicador_usuario==0 and rt.indicador_registro==0" href="/registro/asignatura/${rt.sigla}/periodo/${rt.cod_periodo_academ}/seccion/${rt.seccion}/taller/${rt.id_taller}/fecha/${rt.fecha}/docente/${rt.id_usuario}" style="width: 100px"><button tal:condition="rt.indicador_usuario==0 and rt.indicador_registro==0" id="configure-${rt.ano_academ}" type="button" class="btn btn-warning" style="width: 120px">Registrar</button></a>
+                                        <button class="btn btn-secondary border border-3" tal:condition="rt.indicador_usuario==0 and rt.indicador_registro!=0" id="registrar-${rt.ano_academ}" title="Taller ya registrado" disabled style="width: 120px">Registrado</button>
+                                        <button class="btn btn-light border border-3" tal:condition="rt.indicador_usuario!=0 and rt.indicador_registro==0" id="registrar-${rt.ano_academ}" title="Taller ya registrado" disabled style="width: 120px">No asignado</button>
+                                        <button class="btn btn-secondary border border-3" tal:condition="rt.indicador_usuario!=0 and rt.indicador_registro!=0" id="registrar-${rt.ano_academ}" title="Taller ya registrado" disabled style="width: 120px">Registrado</button>
+                                    </td>
+                                    <td>
+                                        <a href="/consulta/asignatura/${rt.sigla}/taller/${rt.id_taller}"><button id="ver-taller-${rt.ano_academ}" type="button" class="btn btn-dark" style="width: 120px">Consultar</button></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Inicio modal de confirmación de eliminación -->
+                        <div class="modal fade" id="modalEliminacion" tabindex="-1" aria-labelledby="modal-confirmacion" aria-hidden="true">
+                            <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="modal-confirmacion">Eliminar</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div id="mensaje-modal" class="modal-body"></div>
+                                <div class="modal-footer">
+                                <button id="confirmar-eliminacion" data-value="ano_academ|cod_periodo_academ|sigla|seccion" type="button" class="btn btn-warning" data-bs-dismiss="modal">Eliminar</button>
+                                <button id="cancelar-eliminacion" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <!-- Fin modal de confirmación de eliminación -->
+
+                        <!-- Inicio modal de error en la eliminación -->
+                        <div tal:condition="msg_error" tal:omit-tag="False" class="modal fade" id="modalError" tabindex="-1" aria-labelledby="modal-error" aria-hidden="true">
+                            <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="modal-error">Error</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div id="mensaje-modal" class="modal-body">${msg_error}</div>
+                                <div class="modal-footer">
+                                <button id="confirmar-cierre" type="button" class="btn btn-warning" data-bs-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <!-- Fin modal de confirmación de eliminación -->
+
+                    </div>
+                    <!-- Fin zona visible de usuario conectado -->
+
+                    <!-- Fin contenido -->
+                </div>
+                <!-- Fin fila para ingresar columnas de bootstrap -->
+            </div>
+
+        </div>
+    </div>
+
+    <!-- CSS adicional -->
+    <div metal:fill-slot="additional-css" tal:omit-tag="True">
+    </div>
+</div>
