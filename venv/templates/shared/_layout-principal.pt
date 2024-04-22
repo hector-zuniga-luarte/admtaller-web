@@ -99,6 +99,9 @@
                                         <li><a class="dropdown-item bg-body-light text-dark" href="/reporte/1">Valorización por taller</a></li>
                                         <li><a class="dropdown-item bg-body-light text-dark" href="/reporte/2">Presupuesto estimado por asignatura</a></li>
                                         <li><a class="dropdown-item bg-body-light text-dark" href="/reporte/3">Asignación y registro de docentes</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item bg-body-light text-dark" href="/reporte/4">Resumen de productos por rango de fechas</a></li>
+                                        <li><a class="dropdown-item bg-body-light text-dark" href="/reporte/5">Detalle de productos por taller y por rango de fechas</a></li>
                                     </ul>
                                 </li>
                             </ul>
@@ -141,6 +144,9 @@
                                         <li><a class="dropdown-item bg-body-light text-dark" href="/reporte/1">Valorización por taller</a></li>
                                         <li><a class="dropdown-item bg-body-light text-dark" href="/reporte/2">Presupuesto estimado por asignatura</a></li>
                                         <li><a class="dropdown-item bg-body-light text-dark" href="/reporte/3">Asignación y registro de docentes</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item bg-body-light text-dark" href="/reporte/4">Resumen de productos por rango de fechas</a></li>
+                                        <li><a class="dropdown-item bg-body-light text-dark" href="/reporte/5">Detalle de productos por taller y por rango de fechas</a></li>
                                     </ul>
                                 </li>
                             </ul>

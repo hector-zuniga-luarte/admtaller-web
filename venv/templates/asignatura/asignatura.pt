@@ -6,14 +6,17 @@
 
         $('#msg-error-local').hide();
 
+        // Eliminamos los eventuales espacios en la sigla y pasando todo a mayúsculas
+        $('#sigla').on('input', function() {
+            $(this).val($(this).val().toUpperCase().trim());
+        });
+
         $('#formulario').submit(function(e) {
-            var idUsuario = $('#id-usuario').val();
-            var password = $('#password').val();
-            var confirmacionPassword = $('#confirmacion-password').val();
+            let sigla = $('#sigla').val().trim();
 
-            if ((idUsuario === 0) && (password.trim().length === 0) && (confirmacionPassword.trim().length !== 0)) {
+            if (/\s/.test(sigla)) {
                 // Mostrar mensaje de error en la zona de errores
-                var mensajeError = "<b>Error</b>: Debe ingresar la contraseña al usuario"
+                var mensajeError = "<b>Error</b>: La sigla no debe contener espacios entremedio"
 
                 $('#msg-error-local').show();
                 $('#msg-error-local').html(mensajeError);
@@ -21,15 +24,6 @@
                 e.preventDefault(); // Evitar el envío del formulario
             }
 
-            if ((password !== confirmacionPassword) && ((password.trim().length !== 0) || (confirmacionPassword.trim().length !== 0))) {
-                // Mostrar mensaje de error en la zona de errores
-                var mensajeError = "<b>Error</b>: La confirmación de la contraseña no coincide"
-
-                $('#msg-error-local').show();
-                $('#msg-error-local').html(mensajeError);
-
-                e.preventDefault(); // Evitar el envío del formulario
-            }
         });
 
       /* Leemos el mensaje para determinar si viene desde la grabación del formulario y mostrar el mensaje de grabación o no */
@@ -71,8 +65,8 @@
                                             <div class="col-2">
                                                 <div class="form-group">
                                                     <label for="sigla" class="form-label">Sigla</label>
-                                                    <input tal:condition="asignatura.sigla == 'None'" name="sigla" maxlength="40" type="text" class="form-control" id="sigla" aria-describedby="emailHelp" value="" maxlength="15" required>
-                                                    <input tal:condition="asignatura.sigla != 'None'" name="sigla" maxlength="40" type="text" class="form-control" id="sigla" aria-describedby="emailHelp" value="${asignatura.sigla}" maxlength="15" required readonly>
+                                                    <input tal:condition="asignatura.sigla == 'None'" name="sigla" maxlength="15" type="text" class="form-control" id="sigla" aria-describedby="emailHelp" value="" maxlength="15" required>
+                                                    <input tal:condition="asignatura.sigla != 'None'" name="sigla" maxlength="15" type="text" class="form-control" id="sigla" aria-describedby="emailHelp" value="${asignatura.sigla}" maxlength="15" required readonly>
                                                 </div>
                                             </div>
                                             <div class="col-10"></div>
@@ -82,7 +76,7 @@
                                             <div class="col-4">
                                                 <div class="form-group">
                                                     <label for="nom-asignatura" class="form-label">Nombre</label>
-                                                    <input name="nom-asignatura" maxlength="40" type="text" class="form-control" id="nom-asignatura" aria-describedby="emailHelp" value="${asignatura.nom_asignatura}" required maxlength="50">
+                                                    <input name="nom-asignatura" maxlength="50" type="text" class="form-control" id="nom-asignatura" aria-describedby="emailHelp" value="${asignatura.nom_asignatura}" required maxlength="50">
                                                 </div>
                                             </div>
                                             <div class="col-8"></div>
@@ -92,7 +86,7 @@
                                             <div class="col-4">
                                                 <div class="form-group">
                                                     <label for="nom-asignatura-abrev" class="form-label">Nombre abreviado</label>
-                                                    <input name="nom-asignatura-abrev" maxlength="40" type="text" class="form-control" id="nom-asignatura-abrev" aria-describedby="emailHelp" value="${asignatura.nom_asignatura_abrev}" required maxlength="30">
+                                                    <input name="nom-asignatura-abrev" maxlength="30" type="text" class="form-control" id="nom-asignatura-abrev" aria-describedby="emailHelp" value="${asignatura.nom_asignatura_abrev}" required maxlength="30">
                                                 </div>
                                             </div>
                                             <div class="col-8"></div>

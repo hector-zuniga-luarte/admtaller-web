@@ -1,0 +1,183 @@
+
+<script src="/static/external/js/jquery-3.6.4.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function() {
+
+        $('#msg-error-local').hide();
+
+        function validarFechas(fecha_inicio, fecha_termino) {
+            let mensajeError = "";
+
+            if (fecha_inicio > fecha_termino) {
+                mensajeError = "<b>Error</b>: La fecha de inicio debe ser menor o igual a la fecha de término";
+                $('#msg-error-local').show();
+                $('#msg-error-local').html(mensajeError);
+                return false;
+            }
+
+            let fechaInicio = new Date(fecha_inicio);
+            let fechaTermino = new Date(fecha_termino);
+            let diferenciaEnMilisegundos = fechaTermino.getTime() - fechaInicio.getTime();
+            let diferenciaEnSemanas = diferenciaEnMilisegundos / (1000 * 60 * 60 * 24 * 7);
+
+            if (diferenciaEnSemanas >= 5) {
+                mensajeError = "<b>Error</b>: Por limitaciones técnicas, no se puede extraer un período mayor a 5 semanas";
+                $('#msg-error-local').show();
+                $('#msg-error-local').html(mensajeError);
+                return false;
+            }
+
+            return true;
+        }
+
+        $('#excel').click(function(e){
+            let fecha_inicio = $('#fecha_inicio').val();
+            let fecha_termino = $('#fecha_termino').val();
+
+            if (validarFechas(fecha_inicio, fecha_termino)) {
+                e.preventDefault(); // Prevenir el comportamiento predeterminado del enlace
+                $('#msg-error-local').hide();
+                var urlDestino = '/reporte/5/excel/fecha_inicio/' + fecha_inicio + '/fecha_termino/' + fecha_termino;
+                window.location.href = urlDestino;
+            } else {
+                e.preventDefault(); // Evitar el envío del formulario si las fechas no son válidas
+            }
+        });
+  
+    });
+  
+</script>
+
+
+<div metal:use-macro="load: ../shared/_layout-principal.pt">
+    <div metal:fill-slot="content" tal:omit-tag="True">
+        <div class="content">
+
+            <div class="container">
+                <!-- Inicio fila para ingresar columnas de bootstrap -->
+                <div class="row align-items-center">
+                    <!-- Inicio contenido -->
+
+                    <!-- Inicio zona visible de usuario conectado -->
+                    <div tal:condition="esta_conectado" tal:omit-tag="True">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <h4 class="section-title">Reporte detalle de productos por taller y por rango de fechas</h4>
+                            </div>
+                        </div>
+
+                        <div class="container-fluid">
+                            <!-- Definir primero columnas de bootstrap -->
+                            <div class="row align-items-center">
+                                <div class="destacado col-12">
+
+                                    <form class="pt-2 pb-4" method="post" id="formulario" enctype="multipart/form-data">
+                                        <div class="row pb-3">
+                                            <div class="col-3">
+                                                <div class="form-group">
+                                                    <label for="fecha-inicio" class="form-label">Fecha inicio</label>
+                                                    <input name="fecha-inicio" type="date" class="form-control" id="fecha_inicio" aria-describedby="emailHelp" value="${fecha_inicio}">
+                                                </div>
+                                            </div>
+                                            <div class="col-11"></div>
+                                        </div>
+
+                                        <div class="row pb-3">
+                                            <div class="col-3">
+                                                <div class="form-group">
+                                                    <label for="fecha-termino" class="form-label">Fecha término</label>
+                                                    <input name="fecha-termino" type="date" class="form-control" id="fecha_termino" aria-describedby="emailHelp" value="${fecha_termino}">
+                                                </div>
+                                            </div>
+                                            <div class="col-11"></div>
+                                        </div>
+                                          
+                                        <a href="/reporte/5/excel/fecha_inicio/${fecha_inicio}/fecha_termino/${fecha_termino}" id="excel" type="button" class="btn btn-warning" style="width: 100px">Excel</a>
+
+                                    </form>
+                                    <div id="msg-error-local" class="alert alert-danger" role="alert">
+                             
+                                    </div>
+                                    <div id="anchor-error"></div>
+                                    <div id="msg-error" tal:condition="msg_error" class="alert alert-danger" role="alert">
+                                        ${msg_error}
+                                    </div>
+                                    <div id="method" class="alert alert-success m-4 pt-3 d-none" role="alert">${method}</div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div tal:condition="registros and method == 'POST'">
+
+                            <div class="pt-4">
+                                <h5 class="section-subtitle">${fecha_inicio_formato_largo}&nbsp;&nbsp;&#8212;&nbsp;&nbsp;${fecha_termino_formato_largo}</h5>
+                            </div>
+
+                            <div class="row pt-3">
+                                <div class="col-12">
+                                </div>
+                            </div>
+
+                            <table class="table table-striped-custom table-sm">
+                                <thead class="tabla-encabezado">
+                                    <tr>
+                                        <th scope="col">Carrera</th>
+                                        <th scope="col">Categoría</th>
+                                        <th scope="col">Producto</th>
+                                        <th class="text-center" scope="col">Cantidad</th>
+                                        <th class="text-center" scope="col">Unidad medida</th>
+                                        <th class="text-end" scope="col">Precio</th>
+                                        <th class="text-end" scope="col">Precio total</th>
+                                        <th style="width: 10%;" class="text-center" scope="col">Fecha</th>
+                                        <th class="text-start" scope="col">Período</th>
+                                        <th class="text-center" scope="col">Sigla</th>
+                                        <th class="text-start" scope="col">Asignatura</th>
+                                        <th class="text-center" scope="col">Sección</th>
+                                        <th class="text-center" scope="col">Semana</th>
+                                        <th class="text-start" scope="col">Preparación</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr tal:repeat="r registros" tal:omit-tag="False">
+                                        <td class="text-start">${r.nom_carrera}</td>
+                                        <td class="text-start">${r.nom_categ_producto}</td>
+                                        <td class="text-start">${r.nom_producto}</td>
+                                        <td class="text-center">${r.cantidad}</td>
+                                        <td class="text-center">${r.nom_unidad_medida}</td>
+                                        <td class="text-end">${r.precio}</td>
+                                        <td class="text-end">${r.precio_total}</td>
+                                        <td class="text-center">${r.fecha}</td>
+                                        <td class="text-start">${r.nom_periodo_academ}</td>
+                                        <td class="text-end">${r.sigla}</td>
+                                        <td class="text-start">${r.nom_asign}</td>
+                                        <td class="text-center">${r.seccion}</td>
+                                        <td class="text-center">${r.semana}</td>
+                                        <td class="text-start">${r.titulo_preparacion}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        <div class="pt-4" tal:condition="not registros and method != 'GET'">
+                            <h5 class="section-subtitle">No hay datos para los parámetros ingresados</h5>
+                        </div>
+
+                    </div>
+                    <!-- Fin zona visible de usuario conectado -->
+
+                    <!-- Fin contenido -->
+                </div>
+                <!-- Fin fila para ingresar columnas de bootstrap -->
+            </div>
+
+        </div>
+    </div>
+
+    <!-- CSS adicional -->
+    <div metal:fill-slot="additional-css" tal:omit-tag="True">
+    </div>
+</div>

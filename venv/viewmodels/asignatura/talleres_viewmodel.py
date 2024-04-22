@@ -13,6 +13,7 @@ class TalleresViewModel(ViewModelBase):
         self.sigla: str = None
         self.nom_asignatura: str = None
         self.talleres: List[dict] = []
+        self.total: int
 
     # Función que carga datos y verifica si está conectado al sistema
     async def load(self, sigla):
@@ -20,5 +21,6 @@ class TalleresViewModel(ViewModelBase):
             self.sigla = sigla
             self.nom_asignatura = await asignatura_service.get_nom_asignatura(self.sigla, self.id_usuario_conectado)
             self.talleres = await asignatura_service.get_talleres_lista(self.sigla)
+            self.total = sum(t["costo_total"] for t in self.talleres)
         else:
             self.msg_error = Mensajes.ERR_NO_AUTENTICADO.value

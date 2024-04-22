@@ -20,9 +20,6 @@
 
                         <div class="row">
                             <div class="col-1">
-                                <a href="/reporte/3/pdf" type="button" class="btn btn-warning mb-3" style="width: 100px">PDF</a>
-                            </div>
-                            <div class="col-1">
                                 <a href="/reporte/3/excel" type="button" class="btn btn-warning mb-3" style="width: 100px">Excel</a>
                             </div>
                             <div class="col-10">

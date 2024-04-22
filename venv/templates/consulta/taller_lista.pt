@@ -52,20 +52,31 @@
                                     <th class="text-center" scope="col">Semana</th>
                                     <th scope="col">Preparación</th>
                                     <th scope="col">Detalle</th>
-                                    <th scope="col"></th>
+                                    <th class="text-end" scope="col">Costo</th>
+                                    <th class="text-center" scope="col"></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr tal:repeat="t talleres"  tal:omit-tag="False">
                                     <td class="d-none" id="id-taller-${t.id_taller}">${t.id_taller}</td>
                                     <td class="text-center" id="semana-${t.id_taller}">${t.semana}</td>
-                                    <td id="titulo-preparacion-${t.id_taller}">${t.titulo_preparacion}</td>
-                                    <td id="detalle-preparacion-${t.id_taller}">${t.detalle_preparacion}</td>
-                                    <td>
+                                    <td class="text-start" id="titulo-preparacion-${t.id_taller}">${t.titulo_preparacion}</td>
+                                    <td class="text-start" id="detalle-preparacion-${t.id_taller}">${t.detalle_preparacion}</td>
+                                    <td class="text-end" id="costo-total-${t.id_taller}">${'${:,}'.format(t.costo_total)}</td>
+                                    <td class="text-center" >
                                         <a href="/consulta/asignatura/${sigla}/taller/${t.id_taller}"><button id="configure-${t.id_taller}" type="button" class="btn btn-warning">Consultar</button></a>
                                     </td>
                                 </tr>
                             </tbody>
+                            <tfoot tal:condition="cod_perfil_conectado==0 or cod_perfil_conectado==1" tal:omit-tag="True">
+                                <tr>
+                                  <td></td>
+                                  <td></td>
+                                  <td class="text-end font-weight-bold"><h5>Total</h5></td>
+                                  <td class="text-end font-weight-bold"><h5>${'${:,}'.format(total)}</h5></td>
+                                  <td></td>
+                                </tr>
+                              </tfoot>
                         </table>
 
                         <!-- Inicio modal de confirmación de eliminación -->
