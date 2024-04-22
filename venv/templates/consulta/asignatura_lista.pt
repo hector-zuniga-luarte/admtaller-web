@@ -24,7 +24,7 @@
                                     <th scope="col">Nombre</th>
                                     <th scope="col">Nombre abreviado</th>
                                     <th scope="col">Carrera</th>
-                                    <th class="text-end" scope="col">Costo total</th>
+                                    <th tal:condition="cod_perfil_conectado==0 or cod_perfil_conectado==1" class="text-end" scope="col" >Costo total</th>
                                     <th class="text-center" scope="col"></th>
                                 </tr>
                             </thead>
@@ -34,7 +34,7 @@
                                     <td id="nom-asignatura-${a.sigla}">${a.nom_asignatura}</td>
                                     <td id="nom-asignatura-abrev-${a.sigla}">${a.nom_asignatura_abrev}</td>
                                     <td id="nom-carrera-${a.sigla}">${a.nom_carrera}</td>
-                                    <td class="text-end" id="costo-total-${a.sigla}">${'${:,}'.format(a.costo_total)}</td>
+                                    <td tal:condition="cod_perfil_conectado==0 or cod_perfil_conectado==1" class="text-end" id="costo-total-${a.sigla}">${'${:,}'.format(a.costo_total)}</td>
                                     <td class="text-center">
                                         <a href="/consulta/asignatura/${a.sigla}/taller/lista"><button type="button" id="update-${a.sigla}" class="btn btn-warning">Consultar</button></a>
                                     </td>

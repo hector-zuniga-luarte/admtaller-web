@@ -52,7 +52,7 @@
                                     <th class="text-center" scope="col">Semana</th>
                                     <th scope="col">Preparación</th>
                                     <th scope="col">Detalle</th>
-                                    <th class="text-end" scope="col">Costo</th>
+                                    <th class="text-end"  tal:condition="cod_perfil_conectado==0 or cod_perfil_conectado==1" scope="col">Costo</th>
                                     <th class="text-center" scope="col"></th>
                                 </tr>
                             </thead>
@@ -62,7 +62,7 @@
                                     <td class="text-center" id="semana-${t.id_taller}">${t.semana}</td>
                                     <td class="text-start" id="titulo-preparacion-${t.id_taller}">${t.titulo_preparacion}</td>
                                     <td class="text-start" id="detalle-preparacion-${t.id_taller}">${t.detalle_preparacion}</td>
-                                    <td class="text-end" id="costo-total-${t.id_taller}">${'${:,}'.format(t.costo_total)}</td>
+                                    <td tal:condition="cod_perfil_conectado==0 or cod_perfil_conectado==1" class="text-end" id="costo-total-${t.id_taller}">${'${:,}'.format(t.costo_total)}</td>
                                     <td class="text-center" >
                                         <a href="/consulta/asignatura/${sigla}/taller/${t.id_taller}"><button id="configure-${t.id_taller}" type="button" class="btn btn-warning">Consultar</button></a>
                                     </td>
