@@ -141,6 +141,18 @@
                                         <td class="text-end">${'${:,}'.format(r.precio_total_productos)}</td>
                                     </tr>
                                 </tbody>
+                            <tfoot tal:condition="cod_perfil_conectado==0 or cod_perfil_conectado==1" tal:omit-tag="True">
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="text-end font-weight-bold"><h5>Total</h5></td>
+                                    <td class="text-end font-weight-bold"><h5>${'${:,}'.format(total)}</h5></td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
                             </table>
 
                         </div>
