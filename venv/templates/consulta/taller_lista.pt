@@ -45,6 +45,15 @@
                             </div>
                         </div>
 
+                        <div class="row">
+                            <div class="col-4">
+                                <a href="/consulta/asignatura/${sigla}/taller/lista/excel"><button type="button" class="btn btn-warning mb-3">Excel</button></a>
+                                <a href="/consulta/asignatura/lista"><button type="button" class="btn btn-secondary mb-3 ms-1">Volver</button></a>
+                            </div>
+                            <div class="col-10">
+                            </div>
+                        </div>
+
                         <table class="table table-striped-custom">
                             <thead class="tabla-encabezado">
                                 <tr>

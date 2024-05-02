@@ -44,7 +44,7 @@
 
                         <div class="row">
                             <div class="col-2">
-                                <a href="/usuario" type="button" class="btn btn-warning mb-3">Agregar</a>
+                                <a href="/usuario"><button type="button" class="btn btn-warning mb-3">Agregar</button></a>
                             </div>
                         </div>
 
@@ -72,7 +72,7 @@
                                     <td>
                                         <a href="/usuario/${u.id_usuario}"><button type="button" class="btn btn-warning">Modificar</button></a>
                                     </td>
-                                    <td>
+                                    <td tal:condition="u.id_usuario != id_usuario_conectado">
                                         <button id="${u.id_usuario}" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalEliminacion">Eliminar</button>
                                     </td>
                                 </tr>

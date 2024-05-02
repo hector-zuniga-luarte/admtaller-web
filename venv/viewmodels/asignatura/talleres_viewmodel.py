@@ -20,7 +20,14 @@ class TalleresViewModel(ViewModelBase):
         if self.esta_conectado:
             self.sigla = sigla
             self.nom_asignatura = await asignatura_service.get_nom_asignatura(self.sigla, self.id_usuario_conectado)
-            self.talleres = await asignatura_service.get_talleres_lista(self.sigla)
-            self.total = sum(t["costo_total"] for t in self.talleres)
+            self.talleres = await asignatura_service.get_talleres_lista(self.sigla, self.id_usuario_conectado)
+            self.total = 0
+
+            # Anulamos lo que no están configurados para que no tengan problemas con el costo_total None de los talleres que aún no han sido configurados
+            self.talleres = [{**d, "costo_total": 0} if d.get("costo_total") is None else d for d in self.talleres]
+
+            # Si la columna de costo viene en la lista de talleres (al menos en el primer elemento) podemos sumar el total
+            if self.talleres and "costo_total" in self.talleres[0]:
+                self.total = sum(t["costo_total"] for t in self.talleres if t["costo_total"] is not None)
         else:
             self.msg_error = Mensajes.ERR_NO_AUTENTICADO.value

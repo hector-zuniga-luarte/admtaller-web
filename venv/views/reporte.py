@@ -110,7 +110,7 @@ async def reporte_asignacion_registro_docentes_excel(request: Request):
     vm = ReporteAsignacionRegistroDocentes(request)
     await vm.load()
 
-    # Generar el archivo Exce
+    # Generar el archivo Excel
     excel_content = await generar_excel(vm.registros)
 
     # Devolver el Excel como una respuesta
@@ -123,7 +123,7 @@ async def reporte_resumen_producto_rango_fechas_excel(request: Request, fecha_in
     vm = ReporteResumenProductoRangoFechas(request)
     await vm.load(fecha_inicio, fecha_termino)
 
-    # Generar el archivo Exce
+    # Generar el archivo Excel
     excel_content = await generar_excel(vm.registros)
 
     # Devolver el Excel como una respuesta
@@ -136,7 +136,7 @@ async def reporte_detalle_producto_taller_rango_fechas_excel(request: Request, f
     vm = ReporteDetalleProductoTallerRangoFechas(request)
     await vm.load(fecha_inicio, fecha_termino)
 
-    # Generar el archivo Exce
+    # Generar el archivo Excel
     excel_content = await generar_excel(vm.registros)
 
     # Devolver el Excel como una respuesta

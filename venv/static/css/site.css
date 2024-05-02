@@ -82,3 +82,7 @@ footer a:hover {
     color: grey;
     background-color: white;
 }
+
+button {
+    width: 6rem;
+}

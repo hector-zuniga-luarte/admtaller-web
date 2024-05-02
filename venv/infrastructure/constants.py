@@ -8,3 +8,8 @@ class APITaller(str, Enum):
 
 class Mensajes(str, Enum):
     ERR_NO_AUTENTICADO = "El usuario no está correctamente autenticado"
+
+class Perfil(int, Enum):
+    K_ADMINISTRADOR_TI = 0
+    K_ADMINISTRADOR_CARRERA = 1
+    K_DOCENTE = 2

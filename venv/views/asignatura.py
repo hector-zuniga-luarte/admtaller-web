@@ -16,7 +16,7 @@ router = fastapi.APIRouter()
 
 @router.get("/asignatura/lista")
 @template(template_file="asignatura/asignatura_lista.pt")
-async def usuario_lista(request: Request):
+async def asignatura_lista(request: Request):
     vm = AsignaturasViewModel(request)
     await vm.load()
 

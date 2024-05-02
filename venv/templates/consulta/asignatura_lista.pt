@@ -16,6 +16,14 @@
                                 <h4 class="section-title">Consulta &#8211; Asignaturas</h4>
                             </div>
                         </div>
+             
+                        <div class="row">
+                            <div class="col-1">
+                                <a href="/consulta/asignatura/lista/excel"><button type="button" class="btn btn-warning mb-3">Excel</button></a>
+                            </div>
+                            <div class="col-10">
+                            </div>
+                        </div>
 
                         <table class="table table-striped-custom">
                             <thead class="tabla-encabezado">

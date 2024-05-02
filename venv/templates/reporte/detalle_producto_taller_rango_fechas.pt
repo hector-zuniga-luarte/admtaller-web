@@ -94,7 +94,7 @@
                                             <div class="col-11"></div>
                                         </div>
                                           
-                                        <a href="/reporte/5/excel/fecha_inicio/${fecha_inicio}/fecha_termino/${fecha_termino}" id="excel" type="button" class="btn btn-warning" style="width: 100px">Excel</a>
+                                        <a href="/reporte/5/excel/fecha_inicio/${fecha_inicio}/fecha_termino/${fecha_termino}" id="excel"><button type="button" class="btn btn-warning">Excel</button></a>
 
                                     </form>
                                     <div id="msg-error-local" class="alert alert-danger" role="alert">

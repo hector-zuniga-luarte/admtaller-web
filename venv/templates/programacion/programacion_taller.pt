@@ -110,7 +110,7 @@
                                         </div>
                                           
                                         <button type="submit" class="btn btn-warning" id="enviar">Guardar</button>
-                                        <a id="nuevo" class="btn btn-secondary" href="/programacion/asignatura/${sigla}/periodo/${cod_periodo_academ}/seccion/${seccion}/lista" role="button">Volver</a>
+                                        <a id="nuevo" href="/programacion/asignatura/${sigla}/periodo/${cod_periodo_academ}/seccion/${seccion}/lista"><button type="button" class="btn btn-secondary ms-1">Volver</button></a>
 
                                     </form>
                                     <div id="msg-error-local" class="alert alert-danger" role="alert">

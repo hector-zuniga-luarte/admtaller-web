@@ -118,7 +118,7 @@
                                         </div>
 
                                         <button tal:condition="method=='GET' or msg_error" class="btn btn-warning" id="registrar" type="button" data-bs-toggle="modal" data-bs-target="None">Registrar</button>
-                                        <a id="nuevo" class="btn btn-secondary" href="/registro/asignatura/${sigla}/periodo/${cod_periodo_academ}/seccion/${seccion}/lista" role="button">Volver</a>
+                                        <a id="nuevo" href="/registro/asignatura/${sigla}/periodo/${cod_periodo_academ}/seccion/${seccion}/lista"><button type="button" class="btn btn-secondary ms-1">Volver</button></a>
 
                                     </form>
 

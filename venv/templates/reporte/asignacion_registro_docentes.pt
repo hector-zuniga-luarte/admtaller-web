@@ -20,7 +20,7 @@
 
                         <div class="row">
                             <div class="col-1">
-                                <a href="/reporte/3/excel" type="button" class="btn btn-warning mb-3" style="width: 100px">Excel</a>
+                                <a href="/reporte/3/excel"><button type="button" class="btn btn-warning mb-3">Excel</button></a>
                             </div>
                             <div class="col-10">
                             </div>
@@ -54,7 +54,7 @@
                                     <td tal:condition="r.total_taller_asignado!=0" class="text-center">${int(r.porcentaje_registro*100)}%</td>
                                     <td tal:condition="r.total_taller_asignado==0" class="text-center">-</td>
                                     <td>
-                                        <a tal:condition="r.total_taller_asignado!=0" href="/registro/asignatura/${r.sigla}/periodo/${r.cod_periodo_academ}/seccion/${r.seccion}/lista"><button type="button" class="btn btn-dark" style="width: 120px">Consultar</button></a>
+                                        <a tal:condition="r.total_taller_asignado!=0" href="/registro/asignatura/${r.sigla}/periodo/${r.cod_periodo_academ}/seccion/${r.seccion}/lista"><button type="button" class="btn btn-dark">Consultar</button></a>
                                     </td>
                                 </tr>
                             </tbody>

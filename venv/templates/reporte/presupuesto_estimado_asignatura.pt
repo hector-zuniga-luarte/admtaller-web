@@ -20,7 +20,7 @@
 
                         <div class="row">
                             <div class="col-1">
-                                <a href="/reporte/2/excel" type="button" class="btn btn-warning mb-3" style="width: 100px">Excel</a>
+                                <a href="/reporte/2/excel"><button type="button" class="btn btn-warning mb-3">Excel</button></a>
                             </div>
                             <div class="col-10">
                             </div>
@@ -47,7 +47,7 @@
                                     <td class="text-end">${'${:,}'.format(r.total_asign)}</td>
                                     <td class="text-end">${'${:,}'.format(r.total)}</td>
                                     <td>
-                                        <a href="/consulta/asignatura/${r.sigla}/taller/lista"><button type="button" class="btn btn-dark" style="width: 120px">Consultar</button></a>
+                                        <a href="/consulta/asignatura/${r.sigla}/taller/lista"><button type="button" class="btn btn-dark">Consultar</button></a>
                                     </td>
                                 </tr>
                             </tbody>

@@ -41,7 +41,7 @@
                                     <td>
                                         <a tal:condition="rt.indicador_usuario==0 and rt.indicador_registro==0" href="/registro/asignatura/${rt.sigla}/periodo/${rt.cod_periodo_academ}/seccion/${rt.seccion}/taller/${rt.id_taller}/fecha/${rt.fecha}/docente/${rt.id_usuario}" style="width: 100px"><button tal:condition="rt.indicador_usuario==0 and rt.indicador_registro==0" id="configure-${rt.ano_academ}" type="button" class="btn btn-warning" style="width: 120px">Registrar</button></a>
                                         <button class="btn btn-secondary border border-3" tal:condition="rt.indicador_usuario==0 and rt.indicador_registro!=0" id="registrar-${rt.ano_academ}" title="Taller ya registrado" disabled style="width: 120px">Registrado</button>
-                                        <button class="btn btn-light border border-3" tal:condition="rt.indicador_usuario!=0 and rt.indicador_registro==0" id="registrar-${rt.ano_academ}" title="Taller ya registrado" disabled style="width: 120px">No asignado</button>
+                                        <button class="btn btn-light border border-3" tal:condition="rt.indicador_usuario!=0 and rt.indicador_registro==0" id="registrar-${rt.ano_academ}" title="Taller no registrado" disabled style="width: 120px">No registrado</button>
                                         <button class="btn btn-secondary border border-3" tal:condition="rt.indicador_usuario!=0 and rt.indicador_registro!=0" id="registrar-${rt.ano_academ}" title="Taller ya registrado" disabled style="width: 120px">Registrado</button>
                                     </td>
                                     <td>

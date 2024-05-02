@@ -32,7 +32,7 @@ class ConsultaTallerViewModel(ViewModelBase):
             self.semana = taller["semana"]
             self.titulo_preparacion = taller["titulo_preparacion"]
             self.detalle_preparacion = taller["detalle_preparacion"]
-            self.productos = await asignatura_service.get_productos_lista(self.sigla, self.id_taller)
+            self.productos = await asignatura_service.get_productos_lista(self.sigla, self.id_taller, self.id_usuario_conectado)
 
             self.consulta = await consulta_service.get_consulta_taller(self.productos)
 

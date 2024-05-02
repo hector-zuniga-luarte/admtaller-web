@@ -96,8 +96,8 @@
                                         </div>
                                           
                                         <button tal:condition="method=='GET' or msg_error" type="submit" class="btn btn-warning" id="enviar">Guardar</button>
-                                        <a tal:condition="method!='GET' and not msg_error" href="/programacion/asignatura/periodo/seccion" class="btn btn-dark">Agregar nuevo</a>
-                                        <a id="nuevo" class="btn btn-secondary" href="/programacion/asignatura/lista" role="button">Volver</a>
+                                        <a tal:condition="method!='GET' and not msg_error" href="/programacion/asignatura/periodo/seccion"><button type="button" class="btn btn-dark ms-1">Nueva</button></a>
+                                        <a id="nuevo" href="/programacion/asignatura/lista"><button type="button" class="btn btn-secondary ms-1">Volver</button></a>
 
                                     </form>
                                     <div id="msg-error-local" class="alert alert-danger" role="alert">

@@ -173,11 +173,16 @@ async def get_usuario(request: Request, id_usuario_get: int) -> Optional[dict]:
 
 async def update_usuario(request: Request, usuario: dict) -> Optional[dict]:
 
+    print("Hola")
+
+
     # Recuperamos el usuario conectado desde la cookie para pasarlo a los servicios como parámetro para segmentar datos
     id_usuario = cookie_autoriz.get_id_usuario_cookie(request)
 
     # Armamos la URL de la API respectiva
     url = f"{APITaller.URL_BASE.value}/usuario/{id_usuario}"
+
+    print(url)
 
     async with httpx.AsyncClient() as client:
         try:

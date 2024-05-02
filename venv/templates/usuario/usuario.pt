@@ -153,7 +153,7 @@
 
                                         <div class="row pb-3">
                                             <div class="col-4">
-                                                <button tal:condition="usuario.id_usuario != 0" type="button" class="btn btn-danger" data-bs-toggle="collapse" data-bs-target="#formularioCollapse" tal:omit-tag="False">
+                                                <button tal:condition="usuario.id_usuario != 0" type="button" class="btn btn-danger" data-bs-toggle="collapse" data-bs-target="#formularioCollapse" tal:omit-tag="False" style="width: 10rem;">
                                                     Cambiar password
                                                 </button>
 
@@ -183,7 +183,7 @@
                                         
                                           
                                         <button type="submit" class="btn btn-warning" id="enviar">Guardar</button>
-                                        <a class="btn btn-secondary" href="/usuario/lista" role="button">Volver</a>
+                                        <a href="/usuario/lista"><button type="button" class="btn btn-secondary ms-1">Volver</button></a>
 
                                     </form>
                                     <div id="msg-error-local" class="alert alert-danger" role="alert">

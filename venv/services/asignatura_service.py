@@ -5,6 +5,9 @@ from httpx import Request
 from httpx import Response
 from infrastructure.constants import APITaller
 from infrastructure import cookie_autoriz
+from infrastructure.constants import Perfil
+from services import usuario_service
+from infrastructure.constants import Perfil
 from fastapi import status
 
 
@@ -23,6 +26,14 @@ async def get_asignaturas_lista(id_usuario: int) -> Optional[dict]:
 
     # Si todo está correcto, Retornamos la respuesta de la API
     asignaturas = response.json()
+
+    # Determinamos el perfil del usuario conectado de manera que se elimine la información de costos para docentes
+    perfil = await usuario_service.get_perfil(id_usuario)
+    cod_perfil = int(perfil["cod_perfil"])
+    if cod_perfil == Perfil.K_DOCENTE.value:
+        # Eliminamos las columnas con datos sensibles para ese perfil de usuario
+        asignaturas = [{sel: item for sel, item in a.items() if sel != "costo_total"} for a in asignaturas]
+
     return asignaturas
 
 
@@ -70,6 +81,7 @@ async def get_asignatura(request: Request, sigla: str) -> Optional[dict]:
 
     # Si todo está correcto, Retornamos la respuesta de la API
     asignatura = response.json()
+
     return asignatura
 
 
@@ -115,7 +127,7 @@ async def insert_asignatura(asignatura: dict) -> Optional[dict]:
     return asignatura
 
 
-async def get_talleres_lista(sigla: str) -> Optional[dict]:
+async def get_talleres_lista(sigla: str, id_usuario: int) -> Optional[dict]:
     # Armamos la URL de la API respectiva
     url = f"{APITaller.URL_BASE.value}/asignatura/{sigla}/taller/lista"
 
@@ -130,6 +142,14 @@ async def get_talleres_lista(sigla: str) -> Optional[dict]:
 
     # Si todo está correcto, Retornamos la respuesta de la API
     talleres = response.json()
+
+    # Determinamos el perfil del usuario conectado de manera que se elimine la información de costos para docentes
+    perfil = await usuario_service.get_perfil(id_usuario)
+    cod_perfil = int(perfil["cod_perfil"])
+    if cod_perfil == Perfil.K_DOCENTE.value:
+        # Eliminamos las columnas con datos sensibles para ese perfil de usuario
+        talleres = [{sel: item for sel, item in a.items() if sel != "costo_total"} for a in talleres]
+
     return talleres
 
 
@@ -233,7 +253,7 @@ async def insert_taller(taller: dict) -> Optional[dict]:
     return taller
 
 
-async def get_productos_lista(sigla: str, id_taller: int) -> Optional[dict]:
+async def get_productos_lista(sigla: str, id_taller: int, id_usuario: int) -> Optional[dict]:
     # Armamos la URL de la API respectiva
     url = f"{APITaller.URL_BASE.value}/taller/{id_taller}/producto/lista"
 
@@ -248,6 +268,14 @@ async def get_productos_lista(sigla: str, id_taller: int) -> Optional[dict]:
 
     # Si todo está correcto, Retornamos la respuesta de la API
     productos = response.json()
+
+    # Determinamos el perfil del usuario conectado de manera que se elimine la información de costos para docentes
+    perfil = await usuario_service.get_perfil(id_usuario)
+    cod_perfil = int(perfil["cod_perfil"])
+    if cod_perfil == Perfil.K_DOCENTE.value:
+        # Eliminamos las columnas con datos sensibles para ese perfil de usuario
+        productos = [{sel: item for sel, item in p.items() if sel not in ["precio", "total"]} for p in productos]
+
     return productos
 
 

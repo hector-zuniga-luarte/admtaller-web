@@ -108,8 +108,8 @@
                                         </div>
 
                                         <button type="submit" class="btn btn-warning" id="enviar">Guardar</button>
-                                        <a class="btn btn-secondary" href="/asignatura/${taller.sigla}/taller/lista" role="button">Volver</a>
-                                        <a tal:condition="taller.id_taller!=0" class="btn btn-dark" href="/asignatura/${taller.sigla}/taller/${taller.id_taller}/producto/lista" role="button">Configurar</a>
+                                        <a href="/asignatura/${taller.sigla}/taller/lista"><button type="button" class="btn btn-secondary">Volver</button></a>
+                                        <a tal:condition="taller.id_taller!=0" href="/asignatura/${taller.sigla}/taller/${taller.id_taller}/producto/lista"><button type="button" class="btn btn-dark">Configurar</button></a>
 
                                     </form>
                                     <div id="msg-error-local" class="alert alert-danger" role="alert">aller

@@ -105,8 +105,8 @@
                                         </div>
                                           
                                         <button type="submit" class="btn btn-warning" id="enviar">Guardar</button>
-                                        <a class="btn btn-secondary" href="/asignatura/lista" role="button">Volver</a>
-                                        <a tal:condition="asignatura.sigla != 'None'" class="btn btn-dark" href="/asignatura/${asignatura.sigla}/taller/lista" role="button">Configurar</a>
+                                        <a href="/asignatura/lista"><button type="button" class="btn btn-secondary ms-1" >Volver</button></a>
+                                        <a tal:condition="asignatura.sigla != 'None'" href="/asignatura/${asignatura.sigla}/taller/lista"><button type="button" class="btn btn-dark ms-1">Configurar</button></a>
 
                                     </form>
                                     <div id="msg-error-local" class="alert alert-danger" role="alert">

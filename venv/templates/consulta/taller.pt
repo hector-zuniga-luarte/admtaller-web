@@ -23,6 +23,15 @@
                             </div>
                         </div>
 
+                        <div class="row">
+                            <div class="col-4">
+                                <a href="/consulta/asignatura/${sigla}/taller/${id_taller}/excel"><button type="button" class="btn btn-warning mb-3">Excel</button></a>
+                                <a href="/consulta/asignatura/${sigla}/taller/lista"><button type="button" class="btn btn-secondary mb-3 ms-1">Volver</button></a>
+                            </div>
+                            <div class="col-10">
+                            </div>
+                        </div>
+
                         <div tal:condition="cod_perfil_conectado==0 or cod_perfil_conectado==1" tal:omit-tag="True" class="row pt-2 pb-2">
                             <div class="col-12">
                               <h4 class="section-title">Total: ${'${:,}'.format(consulta.total)}</h4>

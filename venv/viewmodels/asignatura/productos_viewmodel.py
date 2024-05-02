@@ -27,6 +27,6 @@ class ProductosTallerViewModel(ViewModelBase):
             taller = await taller_service.get_taller(self.request, self.id_taller)
             self.semana = taller["semana"]
             self.titulo_preparacion = taller["titulo_preparacion"]
-            self.productos = await asignatura_service.get_productos_lista(self.sigla, self.id_taller)
+            self.productos = await asignatura_service.get_productos_lista(self.sigla, self.id_taller, self.id_usuario_conectado)
         else:
             self.msg_error = Mensajes.ERR_NO_AUTENTICADO.value
