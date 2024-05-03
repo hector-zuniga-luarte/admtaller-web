@@ -39,13 +39,13 @@
                                     <td id="sigla-${rt.ano_academ}${rt.cod_periodo_academ}${rt.sigla}|${rt.seccion}">${rt.nom_preferido} ${rt.primer_apellido} ${rt.segundo_apellido}</td>
                                     <td id="sigla-${rt.ano_academ}${rt.cod_periodo_academ}${rt.sigla}|${rt.seccion}">${rt.obs}</td>
                                     <td>
-                                        <a tal:condition="rt.indicador_usuario==0 and rt.indicador_registro==0" href="/registro/asignatura/${rt.sigla}/periodo/${rt.cod_periodo_academ}/seccion/${rt.seccion}/taller/${rt.id_taller}/fecha/${rt.fecha}/docente/${rt.id_usuario}" style="width: 100px"><button tal:condition="rt.indicador_usuario==0 and rt.indicador_registro==0" id="configure-${rt.ano_academ}" type="button" class="btn btn-warning" style="width: 120px">Registrar</button></a>
-                                        <button class="btn btn-secondary border border-3" tal:condition="rt.indicador_usuario==0 and rt.indicador_registro!=0" id="registrar-${rt.ano_academ}" title="Taller ya registrado" disabled style="width: 120px">Registrado</button>
-                                        <button class="btn btn-light border border-3" tal:condition="rt.indicador_usuario!=0 and rt.indicador_registro==0" id="registrar-${rt.ano_academ}" title="Taller no registrado" disabled style="width: 120px">No registrado</button>
+                                        <a tal:condition="rt.indicador_usuario==0 and rt.indicador_registro==0" href="/registro/asignatura/${rt.sigla}/periodo/${rt.cod_periodo_academ}/seccion/${rt.seccion}/taller/${rt.id_taller}/fecha/${rt.fecha}/docente/${rt.id_usuario}"><button tal:condition="rt.indicador_usuario==0 and rt.indicador_registro==0" id="configure-${rt.ano_academ}" type="button" class="btn btn-warning" style="width: 120px">Registrar</button></a>
+                                        <button class="btn btn-secondary border border-3" tal:condition="rt.indicador_usuario==0 and rt.indicador_registro!=0" id="registrar-${rt.ano_academ}" title="Taller ya registrado" disabled>Registrado</button>
+                                        <button class="btn btn-light border border-3" tal:condition="rt.indicador_usuario!=0 and rt.indicador_registro==0" id="registrar-${rt.ano_academ}" title="Taller no registrado" disabled>No registrado</button>
                                         <button class="btn btn-secondary border border-3" tal:condition="rt.indicador_usuario!=0 and rt.indicador_registro!=0" id="registrar-${rt.ano_academ}" title="Taller ya registrado" disabled style="width: 120px">Registrado</button>
                                     </td>
                                     <td>
-                                        <a href="/consulta/asignatura/${rt.sigla}/taller/${rt.id_taller}"><button id="ver-taller-${rt.ano_academ}" type="button" class="btn btn-dark" style="width: 120px">Consultar</button></a>
+                                        <a href="/consulta/asignatura/${rt.sigla}/taller/${rt.id_taller}"><button id="ver-taller-${rt.ano_academ}" type="button" class="btn btn-dark">Consultar</button></a>
                                     </td>
                                 </tr>
                             </tbody>

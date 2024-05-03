@@ -72,8 +72,9 @@
                                     <td>
                                         <a href="/usuario/${u.id_usuario}"><button type="button" class="btn btn-warning">Modificar</button></a>
                                     </td>
-                                    <td tal:condition="u.id_usuario != id_usuario_conectado">
-                                        <button id="${u.id_usuario}" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalEliminacion">Eliminar</button>
+                                    <td>
+                                        <button tal:condition="u.id_usuario != id_usuario_conectado" id="${u.id_usuario}" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalEliminacion">Eliminar</button>
+                                        <button tal:condition="u.id_usuario == id_usuario_conectado" id="${u.id_usuario}" type="button" class="btn btn-light border border-3" disabled data-bs-toggle="modal" data-bs-target="#modalEliminacion">Eliminar</button>
                                     </td>
                                 </tr>
                             </tbody>

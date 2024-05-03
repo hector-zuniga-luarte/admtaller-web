@@ -38,7 +38,8 @@
                                     <td class="text-center" id="seccion-${ra.ano_academ}${ra.cod_periodo_academ}${ra.sigla}${ra.seccion}">${ra.seccion}</td>
                                     <td id="nom-carrera-${ra.ano_academ}${ra.cod_periodo_academ}${ra.sigla}${ra.seccion}">${ra.nom_carrera}</td>
                                     <td>
-                                        <a href="/registro/asignatura/${ra.sigla}/periodo/${ra.cod_periodo_academ}/seccion/${ra.seccion}/lista"><button id="configure-${ra.ano_academ}" type="button" class="btn btn-warning">Registrar</button></a>
+                                        <a tal:condition="cod_perfil_conectado == 2" href="/registro/asignatura/${ra.sigla}/periodo/${ra.cod_periodo_academ}/seccion/${ra.seccion}/lista"><button id="configure-${ra.ano_academ}" type="button" class="btn btn-warning">Registrar</button></a>
+                                        <a tal:condition="cod_perfil_conectado != 2" href="/registro/asignatura/${ra.sigla}/periodo/${ra.cod_periodo_academ}/seccion/${ra.seccion}/lista"><button id="configure-${ra.ano_academ}" type="button" class="btn btn-warning">Consultar</button></a>
                                     </td>
                                 </tr>
                             </tbody>

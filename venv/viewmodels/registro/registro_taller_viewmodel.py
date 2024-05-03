@@ -59,13 +59,13 @@ class RegistroTallerViewModel(ViewModelBase):
             taller = await taller_service.get_taller(self.request, self.id_taller)
             self.semana = taller["semana"]
             self.titulo_preparacion = taller["titulo_preparacion"]
-
-            self.fecha_formato_largo = texto_fecha_formato_largo(self.fecha)
-
             usuario = await usuario_service.get_usuario(self.request, self.id_usuario)
             self.nom_preferido = usuario["nom_preferido"]
             self.primer_apellido = usuario["primer_apellido"]
             self.segundo_apellido = usuario["segundo_apellido"]
+
+            self.fecha_formato_largo = texto_fecha_formato_largo(self.fecha)
+
         else:
             self.msg_error = Mensajes.ERR_NO_AUTENTICADO.value
 
@@ -80,6 +80,20 @@ class RegistroTallerViewModel(ViewModelBase):
         self.seccion = seccion
         self.id_taller = id_taller
         self.id_usuario = id_usuario
+
+        periodo = await param_service.get_periodo(self.request, self.cod_periodo_academ)
+        self.nom_periodo_academ = periodo["nom_periodo_academ"]
+        asignatura = await asignatura_service.get_asignatura(self.request, sigla)
+        self.nom_asignatura = asignatura["nom_asignatura"]
+        taller = await taller_service.get_taller(self.request, self.id_taller)
+        self.semana = taller["semana"]
+        self.titulo_preparacion = taller["titulo_preparacion"]
+        usuario = await usuario_service.get_usuario(self.request, self.id_usuario)
+        self.nom_preferido = usuario["nom_preferido"]
+        self.primer_apellido = usuario["primer_apellido"]
+        self.segundo_apellido = usuario["segundo_apellido"]
+
+        self.fecha_formato_largo = texto_fecha_formato_largo(self.fecha)
 
         self.obs = form.get("obs", "").strip()
 

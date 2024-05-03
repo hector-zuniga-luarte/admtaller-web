@@ -35,7 +35,7 @@
             </div>
             <div class="col-6 text-end">
                 <div class="dropdown" tal:condition="esta_conectado">
-                    <button class="btn btn-transparent dropdown-toggle text-light float-right" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="width: 24rem;">
+                    <button class="btn btn-transparent dropdown-toggle text-light float-right" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="width: auto;">
                         <span>${login_conectado}</span><span tal:condition="esta_conectado and nom_carrera"> (${nom_carrera})</span>
                     </button>
                     <ul class="dropdown-menu bg-body-secondary text-dark" aria-labelledby="userDropdown">
