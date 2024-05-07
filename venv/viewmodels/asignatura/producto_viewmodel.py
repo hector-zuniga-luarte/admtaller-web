@@ -23,6 +23,7 @@ class ProductoTallerViewModel(ViewModelBase):
         self.nom_producto: int
         self.nom_agrupador: str
         self.nom_unidad_medida: str
+        self.precio: int
 
         self.producto: dict
         self.taller: dict
@@ -51,6 +52,7 @@ class ProductoTallerViewModel(ViewModelBase):
             self.nom_agrupador = self.producto["nom_agrupador"]
             self.nom_unidad_medida = self.producto["nom_unidad_medida"]
             self.cantidad = self.producto["cantidad"]
+            self.precio = self.producto["precio"]
             self.lista_productos = await producto_service.get_lista_productos(self.id_usuario_conectado)
             self.lista_agrupadores = await taller_service.get_lista_agrupadores()
         else:
@@ -123,6 +125,7 @@ class ProductoTallerViewModel(ViewModelBase):
             self.nom_producto = self.producto["nom_producto"]
             self.nom_agrupador = self.producto["nom_agrupador"]
             self.cantidad = self.producto["cantidad"]
+            self.precio = self.producto["precio"]
             self.nom_unidad_medida = self.producto["nom_unidad_medida"]
             self.lista_productos = await producto_service.get_lista_productos(self.id_usuario_conectado)
             self.lista_agrupadores = await taller_service.get_lista_agrupadores()

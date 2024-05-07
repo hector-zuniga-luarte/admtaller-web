@@ -1,5 +1,6 @@
 
 <script src="/static/external/js/jquery-3.6.4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
 <script type="text/javascript">
 
     $(document).ready(function() {
@@ -32,13 +33,55 @@
             }
         });
 
-      /* Leemos el mensaje para determinar si viene desde la grabación del formulario y mostrar el mensaje de grabación o no */
-      method = $("#method").text();
-      if (method != "GET") {
-      /* Grabó, mostramos el mensaje y redirijimos la página al anchor del mensaje */
+        /* Leemos el mensaje para determinar si viene desde la grabación del formulario y mostrar el mensaje de grabación o no */
+        method = $("#method").text();
+        if (method != "GET") {
+        /* Grabó, mostramos el mensaje y redirijimos la página al anchor del mensaje */
         $('html,body').animate({ scrollTop: $("#anchor-error").offset().top }, 'fast');
-      }
-  
+        }
+
+        /* Función para calcular el total */
+        function calcularTotal() {
+            let cantidad = parseFloat($("#cantidad").val());
+            let precio = 0;
+            let nomUnidadMedida = "";
+
+            /* Si el select está presente en el DOM  es un producto nuevo. Unidad de medida y precio se extraen del elemento seleccionado en el select */
+            if ($("#id-producto-select").length) {
+                nomUnidadMedida = $("#id-producto-select option:selected").data("nom-unidad-medida");
+                precio = parseFloat($("#id-producto-select option:selected").data("precio"));
+            } 
+            
+            /* Si el inputt está presente en el DOM  es un producto existente. Unidad de medida y precio se extraen del input respectivo */
+            if ($("#id-producto-input").length) {
+                nomUnidadMedida = $("#id-producto-input").data("nom-unidad-medida");
+                precio = parseFloat($("#id-producto-input").data("precio"));
+            }
+
+            /* Hacemos el cálculo y formateamos la salida */
+            let total = Math.round(cantidad * precio);
+            let totalFormato = numeral(total).format("$0,0");
+            let precioFormato = numeral(precio).format("$0,0");
+            let cantidadFormato = numeral(cantidad).format('0,0.00');
+
+            /* Establecemos el valor en el texto del precio unitario x cantidad = total */
+            $("#calculo").html(precioFormato + " por " + nomUnidadMedida + " &times; " + cantidadFormato + " = ");
+            $("#total").text(totalFormato);
+        }
+
+        /* Adjunta el controlador de eventos al cambio en el input de cantidad y al cambio en el select de producto */
+        $("#cantidad").on("input", function() {
+            calcularTotal(); // Llama a la función para calcular el total
+        });
+
+        $("#id-producto-select").on("change", function() {
+            /* Llama a la función para calcular el total */
+            calcularTotal();
+        });
+
+        /* Calcula el total inicial */
+        calcularTotal();
+
     });
   
 </script>
@@ -79,11 +122,11 @@
                                             <div class="col-5">
                                                 <div class="form-group">
                                                     <label for="producto" class="form-label">Producto</label>
-                                                    <select tal:condition="id_producto==0 and cod_agrupador==0" name="id-producto" class="form-select" aria-label="Default select example">
-                                                        <option tal:repeat="p lista_productos" tal:attributes="value p.id_producto; selected python:str(p.id_producto) == str(id_producto) and 'selected' or None">${p.nom_producto} - [${p.nom_unidad_medida}]</option>
+                                                    <select tal:condition="id_producto==0 and cod_agrupador==0" name="id-producto-select" id="id-producto-select" class="form-select" aria-label="Default select example">
+                                                        <option tal:repeat="p lista_productos" tal:attributes="value p.id_producto; selected python:str(p.id_producto) == str(id_producto) and 'selected' or None" data-nom-unidad-medida="${p.nom_unidad_medida}" data-precio="${p.precio}">${p.nom_producto} - [${'${:,}'.format(p.precio)} por ${p.nom_unidad_medida}]</option>
                                                     </select>
-                                                    <input tal:condition="id_producto!=0 or cod_agrupador!=0" name="nom-producto" maxlength="40" type="text" class="form-control" id="cod-" aria-describedby="emailHelp" value="${nom_producto} - [${nom_unidad_medida}]" required maxlength="40" readonly disabled>
-                                                    <input tal:condition="id_producto!=0 or cod_agrupador!=0" name="id-producto" maxlength="40" type="hidden" class="form-control" id="cod-" aria-describedby="emailHelp" value="${id_producto}" required maxlength="40">
+                                                    <input tal:condition="id_producto!=0 or cod_agrupador!=0" name="nom-producto" maxlength="40" type="text" class="form-control" id="nom-producto-" aria-describedby="emailHelp" value="${nom_producto} - [${'${:,}'.format(precio)} por ${nom_unidad_medida}]" required maxlength="40" readonly disabled>
+                                                    <input tal:condition="id_producto!=0 or cod_agrupador!=0" name="id-producto" maxlength="40" type="hidden" class="form-control" id="id-producto-input" data-nom-unidad-medida="${nom_unidad_medida}" data-precio="${precio}" aria-describedby="emailHelp" value="${id_producto}" required maxlength="40">
                                                 </div>
                                             </div>
                                             <div class="col-7"></div>
@@ -113,6 +156,13 @@
                                             <div class="col-10"></div>
                                         </div>
                                           
+                                        <div class="row pb-3">
+                                            <div class="col">
+                                                <h6 id="calculo" class="d-inline">{precio} por {unidad} &times; {cantidad} = </h6>
+                                                <h5 id="total" class="d-inline">{total}</h5>
+                                            </div>
+                                        </div>
+
                                         <button type="submit" class="btn btn-warning" id="enviar">Guardar</button>
                                         <a href="/asignatura/${sigla}/taller/${id_taller}/producto/lista"><button type="button" class="btn btn-secondary ms-1">Volver</button></a>
 
