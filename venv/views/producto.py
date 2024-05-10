@@ -7,6 +7,8 @@ from starlette.requests import Request
 from starlette import status
 from services import producto_service
 from infrastructure import cookie_autoriz
+from infrastructure.fileexport import generar_excel
+from starlette.responses import Response
 
 router = fastapi.APIRouter()
 
@@ -89,3 +91,16 @@ async def usuario_post(request: Request):
 
     # Se retorna el diccionario entregado por el redirect hacia la página principal
     return vm.to_dict()
+
+
+@router.get("/producto/lista/excel")
+async def producto_lista_excel(request: Request):
+    vm = ProductosViewModel(request)
+    await vm.load()
+
+    # Generar el archivo Excel
+    excel_content = await generar_excel(vm.productos)
+
+    # Devolver el Excel como una respuesta
+    filename = f"Lista de productos"
+    return Response(content=excel_content, media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", headers={"Content-Disposition": "attachment; filename=" + filename + ".xlsx"})
