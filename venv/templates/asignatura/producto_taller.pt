@@ -47,9 +47,9 @@
             let nomUnidadMedida = "";
 
             /* Si el select está presente en el DOM  es un producto nuevo. Unidad de medida y precio se extraen del elemento seleccionado en el select */
-            if ($("#id-producto-select").length) {
-                nomUnidadMedida = $("#id-producto-select option:selected").data("nom-unidad-medida");
-                precio = parseFloat($("#id-producto-select option:selected").data("precio"));
+            if ($("#id-producto").length) {
+                nomUnidadMedida = $("#id-producto option:selected").data("nom-unidad-medida");
+                precio = parseFloat($("#id-producto option:selected").data("precio"));
             } 
             
             /* Si el inputt está presente en el DOM  es un producto existente. Unidad de medida y precio se extraen del input respectivo */
@@ -74,7 +74,7 @@
             calcularTotal(); // Llama a la función para calcular el total
         });
 
-        $("#id-producto-select").on("change", function() {
+        $("#id-producto").on("change", function() {
             /* Llama a la función para calcular el total */
             calcularTotal();
         });
@@ -122,7 +122,7 @@
                                             <div class="col-5">
                                                 <div class="form-group">
                                                     <label for="producto" class="form-label">Producto</label>
-                                                    <select tal:condition="id_producto==0 and cod_agrupador==0" name="id-producto-select" id="id-producto-select" class="form-select" aria-label="Default select example">
+                                                    <select tal:condition="id_producto==0 and cod_agrupador==0" name="id-producto" id="id-producto" class="form-select" aria-label="Default select example">
                                                         <option tal:repeat="p lista_productos" tal:attributes="value p.id_producto; selected python:str(p.id_producto) == str(id_producto) and 'selected' or None" data-nom-unidad-medida="${p.nom_unidad_medida}" data-precio="${p.precio}">${p.nom_producto} - [${'${:,}'.format(p.precio)} por ${p.nom_unidad_medida}]</option>
                                                     </select>
                                                     <input tal:condition="id_producto!=0 or cod_agrupador!=0" name="nom-producto" maxlength="40" type="text" class="form-control" id="nom-producto-" aria-describedby="emailHelp" value="${nom_producto} - [${'${:,}'.format(precio)} por ${nom_unidad_medida}]" required maxlength="40" readonly disabled>
