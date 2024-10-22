@@ -52,5 +52,7 @@ class LoginViewModel(ViewModelBase):
 
                 nom_carrera: str = await usuario_service.get_nom_carrera(self.id_usuario)
                 self.nom_carrera = nom_carrera
+                cod_carrera: int = await usuario_service.get_cod_carrera(self.id_usuario)
+                self.cod_carrera = cod_carrera
         except Exception as e:
             self.msg_error = f"Error en la llamada al servicio de autenticación. {str(e)}"

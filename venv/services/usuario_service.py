@@ -106,6 +106,24 @@ async def get_nom_carrera(id_usuario: int) -> Optional[str]:
     return nom_carrera.strip()
 
 
+async def get_cod_carrera(id_usuario: int) -> Optional[int]:
+    # Armamos la URL de la API respectiva
+    url = f"{APITaller.URL_BASE.value}/perfil/cod_carrera/{id_usuario}"
+
+    async with httpx.AsyncClient() as client:
+        try:
+            response: Response = await client.get(url)
+            response.raise_for_status()
+        except httpx.HTTPStatusError as e:
+            raise Exception(f"Error en la llamada a la API respectiva. [{str(e)}]")
+        except httpx.RequestError as e:
+            raise Exception(f"Error de conexión con la API respectiva. [{str(e)}]")
+
+    # Si todo está correcto, Retornamos la respuesta de la API
+    cod_carrera: int = response.json()["cod_carrera"]
+    return cod_carrera
+
+
 async def get_usuarios_lista(id_usuario: int) -> Optional[dict]:
     # Armamos la URL de la API respectiva
     url = f"{APITaller.URL_BASE.value}/usuario/lista/{id_usuario}"

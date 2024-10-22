@@ -10,10 +10,36 @@
             var idUsuario = $('#id-usuario').val();
             var password = $('#password').val();
             var confirmacionPassword = $('#confirmacion-password').val();
+            var codPerfil = $('#cod-perfil').val();
+            var codCarrera = $('#cod-carrera').val();
 
-            if ((idUsuario === 0) && (password.trim().length === 0) && (confirmacionPassword.trim().length !== 0)) {
+            console.log(codPerfil)
+            console.log(codCarrera)
+  
+            if ((codPerfil == 1 || codPerfil == 2) && (codCarrera == 0)) {
                 // Mostrar mensaje de error en la zona de errores
-                var mensajeError = "<b>Error</b>: Debe ingresar la contraseña al usuario"
+                console.log("Tiene que entrar!")
+                var mensajeError = "<b>Error</b>: Los usuarios de perfil docente o administrador de carrera deben tener una carrera definida";
+
+                $('#msg-error-local').show();
+                $('#msg-error-local').html(mensajeError);
+
+                e.preventDefault(); // Evitar el envío del formulario
+            }
+
+            if ((codPerfil == 0 || codPerfil == 3) && (codCarrera != 0)) {
+                // Mostrar mensaje de error en la zona de errores
+                var mensajeError = "<b>Error</b>: Los usuarios de perfil administrador TI o jefe de bodega no deben tener una carrera definida";
+
+                $('#msg-error-local').show();
+                $('#msg-error-local').html(mensajeError);
+
+                e.preventDefault(); // Evitar el envío del formulario
+            }
+
+            if ((idUsuario == 0) && (password.trim().length === 0) && (confirmacionPassword.trim().length !== 0)) {
+                // Mostrar mensaje de error en la zona de errores
+                var mensajeError = "<b>Error</b>: Debe ingresar la contraseña del usuario"
 
                 $('#msg-error-local').show();
                 $('#msg-error-local').html(mensajeError);
@@ -30,6 +56,7 @@
 
                 e.preventDefault(); // Evitar el envío del formulario
             }
+  
         });
 
       /* Leemos el mensaje para determinar si viene desde la grabación del formulario y mostrar el mensaje de grabación o no */
@@ -131,7 +158,7 @@
                                             <div class="col-4">
                                                 <div class="form-group">
                                                     <label for="cod-perfil" class="form-label">Perfil</label>
-                                                    <select name="cod-perfil" class="form-select" aria-label="Default select example">
+                                                    <select name="cod-perfil" id="cod-perfil" class="form-select" aria-label="Default select example">
                                                         <option tal:repeat="p lista_perfil" tal:attributes="value p.cod_perfil; selected python:str(p.cod_perfil) == str(usuario.cod_perfil) and 'selected' or None">${p.nom_perfil}</option>
                                                     </select>
                                                 </div>
@@ -143,7 +170,7 @@
                                             <div class="col-4">
                                                 <div class="form-group">
                                                     <label for="carrera" class="form-label">Carrera</label>
-                                                    <select name="cod-carrera" class="form-select" aria-label="Default select example">
+                                                    <select name="cod-carrera" id="cod-carrera" class="form-select" aria-label="Default select example">
                                                         <option tal:repeat="c lista_carrera" tal:attributes="value c.cod_carrera; selected python:str(c.cod_carrera) == str(usuario.cod_carrera) and 'selected' or None">${c.nom_carrera}</option>
                                                     </select>
                                                 </div>

@@ -30,8 +30,11 @@ class ViewModelBase:
         # El año académico en curso
         self.ano_academ: Optional[int] = cookie_autoriz.get_ano_academ_cookie(request)
 
-        # La carrera a la que pertenece el usuario
+        # El nombre de la carrera a la que pertenece el usuario
         self.nom_carrera: Optional[str] = cookie_autoriz.get_nom_carrera_cookie(request)
+
+        # El código de la carrera a la que pertenece el usuario
+        self.cod_carrera: Optional[int] = cookie_autoriz.get_cod_carrera_cookie(request)
 
         # Método del request. ütil para saber cuándo mostrar mensajes de grabación exitosos
         self.method = request.method

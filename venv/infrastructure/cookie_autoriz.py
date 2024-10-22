@@ -11,9 +11,9 @@ autoriz_cookie: str = "cookie_admtaller"
 
 
 # Setea la cookie del autorización al sistema
-def set_autoriz_cookie(response: Response, id_usuario: int, login: str, cod_perfil: int, ano_academ: int, nom_carrera: str):
+def set_autoriz_cookie(response: Response, id_usuario: int, login: str, cod_perfil: int, ano_academ: int, nom_carrera: str, cod_carrera: int):
     hash_valor: str = hash_text(str(id_usuario))
-    valor: str = "{}:{}:{}:{}:{}:{}".format(id_usuario, login, hash_valor, cod_perfil, ano_academ, nom_carrera)
+    valor: str = "{}:{}:{}:{}:{}:{}:{}".format(id_usuario, login, hash_valor, cod_perfil, ano_academ, nom_carrera, cod_carrera)
     response.set_cookie(autoriz_cookie, valor, secure=False, httponly=True, samesite="Lax")
 
 
@@ -23,7 +23,7 @@ def get_usuario_cookie(request: Request):
 
     val = request.cookies[autoriz_cookie]
     parts = val.split(":")
-    if len(parts) != 6:
+    if len(parts) != 7:
         return None
 
     usuario_cookie = {
@@ -33,6 +33,7 @@ def get_usuario_cookie(request: Request):
         "cod_perfil": parts[3],
         "ano_academ": parts[4],
         "nom_carrera": parts[5],
+        "cod_carrera": parts[6],
     }
 
     hash_val = usuario_cookie["hash_valor"]
@@ -103,6 +104,19 @@ def get_nom_carrera_cookie(request: Request) -> Optional[str]:
     if not nom_carrera:
         nom_carrera = ""
     return nom_carrera
+
+
+# Retorna el código de la carrera del usuario conectado desde la cookie
+def get_cod_carrera_cookie(request: Request) -> Optional[int]:
+    dict = get_usuario_cookie(request)
+    if not dict:
+        return None
+
+    cod_carrera: str = (dict["cod_carrera"])
+    convierte_entero(cod_carrera)
+    if not cod_carrera:
+        return None
+    return int(cod_carrera)
 
 
 # La desconexión implica eliminar la cookie

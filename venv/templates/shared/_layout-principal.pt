@@ -16,7 +16,7 @@
     <!-- CSS personalizado -->
     <link rel="stylesheet" href="/static/css/site.css">
 
-    <!-- favico -->
+    <!-- favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="/static/img/favicon.ico">
 
     <!-- CSS adicional de chameleon -->
@@ -36,7 +36,7 @@
             <div class="col-6 text-end">
                 <div class="dropdown" tal:condition="esta_conectado">
                     <button class="btn btn-transparent dropdown-toggle text-light float-right" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="width: auto;">
-                        <span>${login_conectado}</span><span tal:condition="esta_conectado and nom_carrera"> (${nom_carrera})</span>
+                        <span>${login_conectado}</span><span tal:condition="esta_conectado and cod_carrera != 0"> (${nom_carrera})</span>
                     </button>
                     <ul class="dropdown-menu bg-body-secondary text-dark" aria-labelledby="userDropdown">
                         <li><a class="dropdown-item bg-body-light text-dark" href="/password">Cambiar contraseña</a></li>
@@ -63,7 +63,7 @@
                         <span class="navbar-toggler-icon"></span>
                         </button>
 
-                        <!-- Inicio menú administrador de sistema -->
+                        <!-- Inicio menú administrador TI -->
                         <div tal:condition="esta_conectado and cod_perfil_conectado == 0" class="collapse navbar-collapse" id="navbarNavDropdown">
                             <ul class="navbar-nav">
                                 <li class="nav-item dropdown">
@@ -175,6 +175,38 @@
                             </ul>
                         </div>
                         <!-- Fin menú docente -->
+
+                        <!-- Inicio menú jefe de bodega -->
+                        <div tal:condition="esta_conectado and cod_perfil_conectado == 3" class="collapse navbar-collapse" id="navbarNavDropdown">
+                            <ul class="navbar-nav">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Administración
+                                    </a>
+                                    <ul class="dropdown-menu bg-body-secondary text-dark">
+                                        <li><a class="dropdown-item bg-body-light text-dark" href="/producto/lista">Productos</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Consultas
+                                    </a>
+                                    <ul class="dropdown-menu bg-body-secondary text-dark">
+                                        <li><a class="dropdown-item bg-body-light text-dark" href="/consulta/asignatura/lista">Taller</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Reportes
+                                    </a>
+                                    <ul class="dropdown-menu bg-body-secondary text-dark">
+                                        <li><a class="dropdown-item bg-body-light text-dark" href="/reporte/4">Resumen de productos por rango de fechas</a></li>
+                                        <li><a class="dropdown-item bg-body-light text-dark" href="/reporte/5">Detalle de productos por taller y por rango de fechas</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- Fin menú jefe de bodega -->
 
                     </div>
                 </nav>
